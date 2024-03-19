@@ -17,7 +17,10 @@ namespace WpfApp1.ViewModels
 
         public MainViewModel(IRegionManager regionManager)
         {
-            _regionManager = new RegionManager();
+            _regionManager = regionManager;
+            _regionManager.Regions["StackPanelRegion"].RequestNavigate("TestRegionAView", new NavigationParameters());
+
+
         }
 
         public ICommand LoadCommand

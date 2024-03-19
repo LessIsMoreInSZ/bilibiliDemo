@@ -18,7 +18,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="StackPanelRegion" />
+        <!--<ContentControl prism:RegionManager.RegionName="StackPanelRegion" />-->
         <avalon:DockingManager>
             <avalon:DockingManager.Theme>
                 <avalon:MetroTheme />
@@ -29,7 +29,7 @@
                         <avalon:LayoutAnchorablePane x:Name="panelLeft">
                             <avalon:LayoutAnchorable Title="Left1">
                                 <!--<StackPanel prism:RegionManager.RegionName="StackPanelRegion" />-->
-                                <!--<ContentControl prism:RegionManager.RegionName="StackPanelRegion" />-->
+                                <ContentControl prism:RegionManager.RegionName="StackPanelRegion" />
                             </avalon:LayoutAnchorable>
                             <avalon:LayoutAnchorable Title="Left2">
                                 <Button Command="{Binding ClickCommand}"/>

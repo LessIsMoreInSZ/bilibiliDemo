@@ -4,13 +4,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avalon="http://schemas.xceed.com/wpf/xaml/avalondock"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
     Title="MainWindow"
     Width="800"
     Height="450"
     mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
+        <ContentControl prism:RegionManager.RegionName="StackPanelRegion" />
         <avalon:DockingManager>
             <avalon:DockingManager.Theme>
                 <avalon:MetroTheme />
@@ -20,26 +28,12 @@
                     <avalon:LayoutAnchorablePaneGroup DockMinWidth="240" FloatingWidth="240">
                         <avalon:LayoutAnchorablePane x:Name="panelLeft">
                             <avalon:LayoutAnchorable Title="Left1">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="1" />
-                                    <TextBlock Grid.Column="1" Text="2" />
-                                    <TextBlock Grid.Row="1" Text="3" />
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Text="4" />
-
-                                </Grid>
+                                <!--<StackPanel prism:RegionManager.RegionName="StackPanelRegion" />-->
+                                <!--<ContentControl prism:RegionManager.RegionName="StackPanelRegion" />-->
                             </avalon:LayoutAnchorable>
-                            <avalon:LayoutAnchorable Title="Left2" />
+                            <avalon:LayoutAnchorable Title="Left2">
+                                <Button Command="{Binding ClickCommand}"/>
+                            </avalon:LayoutAnchorable>
                         </avalon:LayoutAnchorablePane>
                     </avalon:LayoutAnchorablePaneGroup>
                     <avalon:LayoutPanel Orientation="Vertical">

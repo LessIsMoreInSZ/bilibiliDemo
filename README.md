@@ -7,3 +7,10 @@
 
 ## BiliBili
 <https://space.bilibili.com/38974613?spm_id_from=333.1007.0.0>
+
+```
+AutofacDemo 依赖注入demo
+C#andCpp C# 和cpp使用pinvoke技术通信demo
+dump 自动创建转储文件demo
+TestAvRegion wpf使用AVDock内置region demo
+WPFCustomChart wpf自定义图表 demo

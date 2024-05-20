@@ -35,20 +35,6 @@ namespace TestDump
             //Thread thread = new Thread(TestDump);
             //thread.Start();
 
-            while (true)
-            {
-                Task.Run(() =>
-                {
-                    if(Thread.CurrentThread.ManagedThreadId.ToString().Equals("1"))
-                    {
-                        textBox1.Text = "1";
-                        TextBox text = new TextBox();
-                        this.Controls.Add(text);
-                    }
-                });
-                Thread.Sleep(100);
-            }
-
             Task.Run(() =>
             {
                 MessageBox.Show(Thread.CurrentThread.ManagedThreadId.ToString());

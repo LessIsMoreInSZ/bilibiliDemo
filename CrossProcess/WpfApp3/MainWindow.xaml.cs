@@ -24,8 +24,8 @@ namespace WpfApp3
             InitializeComponent();
 
             //ProcessStartInfo startInfo = new ProcessStartInfo("notepad.exe");
-            ProcessStartInfo startInfo = new ProcessStartInfo("C:\\Program Files\\DCCKVisionPlus\\Libs\\DCCK.VisionPlus.GStudio.exe"
-                , "F:\\通用_你好V+1\\通用_你好V+1.vps");
+            ProcessStartInfo startInfo = new ProcessStartInfo("C:\\Program Files\\xxx.exe"
+                , "F:\\xxx.vps");
         
             try
             {
@@ -47,12 +47,8 @@ namespace WpfApp3
 
             Thread.Sleep(21000);
             //IntPtr hw = Win32API.FindWindow("Chrome_WidgetWin_0", "迅雷");   //第一参数是类名，第二个是窗口标题
-            //IntPtr hw = Win32API.FindWindow(null, "无标题 - 记事本");   //第一参数是类名，第二个是窗口标题
+            IntPtr hw = Win32API.FindWindow(null, "无标题 - 记事本");   //第一参数是类名，第二个是窗口标题
 
-            //IntPtr hw = Win32API.FindWindow(null, "DCCK Vision+ Studio");   //第一参数是类名，第二个是窗口标题
-            //IntPtr hw = Win32API.FindWindow(null, "VisionPlus");
-            //IntPtr hw = Win32API.FindWindow(null, "主窗体");
-            IntPtr hw = Win32API.FindWindow(null, "窗体3");
             Win32API.MoveWindow(hw, 0, 0, pannel_exe.Width, pannel_exe.Height, true);
             Win32API.SetParent(hw, pannel_exe.Handle);
 

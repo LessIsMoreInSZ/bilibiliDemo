@@ -20,20 +20,20 @@ namespace TestDump
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // 创建bug让程序闪退
+            //创建bug让程序闪退
             //double[] doubles = new double[10];
-            //for(int i = 0; i < 12; i++) 
+            //for (int i = 0; i < 12; i++)
             //{
             //    doubles[i] = 5;
             //}
 
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Thread thread = new Thread(TestDump);
-            //thread.Start();
+            Thread thread = new Thread(TestDump);
+            thread.Start();
 
             Task.Run(() =>
             {

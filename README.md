@@ -15,5 +15,6 @@ dump 自动创建转储文件demo
 TestAvRegion wpf使用AVDock内置region demo
 WPFCustomChart wpf自定义图表 demo
 CrossProcess 展示不同.NET版本间的跨进程调用
+ThreadTest 多线程专用demo
 
 ```

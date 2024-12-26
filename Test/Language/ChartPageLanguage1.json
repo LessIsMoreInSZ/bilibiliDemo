@@ -1,0 +1,22 @@
+{
+  "Select": "中文=曲线选择;English=Chart Select;",
+  "Flow": "中文=流量;English=Flow;",
+  "Pressure": "中文=压力;English=Pressure;",
+  "Vacuum": "中文=真空;English=Vacuum;",
+  "ID": "中文=产品ID;English=Product ID;",
+  "Start": "中文=起始位置;English=Start Position;",
+  "Scheme": "中文=方案名称;English=Scheme Name;",
+  "Stop": "中文=结束位置;English=Stop Position;",
+  "Zongchouqi": "中文=总抽气;English=Total Air;",
+  "Wurandu": "中文=污染度;English=Pollution Degree;",
+  "Time": "中文=生产时间;English=Production Time;",
+  "Channel": "中文=通道;English=Channel;",
+  "Min_Pressure": "中文=最小压力;English=Minimum Pressure;",
+  "Reaction_Time": "中文=反应时间;English=Reaction Time;",
+  "Air_Time": "中文=通风时间;English=Air Time;",
+  "Closed_Position": "中文=封闭位置;English=Closed Time;",
+  "Speed": "中文=速度;English=Speed;",
+  "Position": "中文=位置;English=Position;",
+  "Points_Information": "中文=以下为相邻三点的坐标;English=The coordinates of the three adjacent points as below;",
+  "Error_Information": "中文=数组有误，无法显示;English=The array is incorrect and cannot be displayed;"
+}

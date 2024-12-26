@@ -1,0 +1,22 @@
+{
+  "StartTime": "中文=开始时间:;English=Start Time:",
+  "EndTime": "中文=结束时间:;English=End Time:",
+  "Select": "中文=选择;English=Select",
+  "Flow": "中文=流量;English=Flow",
+  "Pressure": "中文=压力;English=Pressure",
+  "Vacuum": "中文=真空;English=Vacuum",
+  "Id": "中文=产品ID;English=ID",
+  "Start": "中文=起始位置;English=Start Pos",
+  "Scheme": "中文=方案名称;English=Scheme",
+  "Stop": "中文=结束位置;English=Stop Pos",
+  "Zongchouqi": "中文=总抽气;English=Air Exhaust",
+  "Wurandu": "中文=污染度;English=Degree",
+  "ProductTime": "中文=生产时间;English=Product Time",
+  "Channel": "中文=通道;English=Channel",
+  "Min_pressure": "中文=最小压力;English=Min Pressure",
+  "Reaction_time": "中文=反应时间;English=Reaction Time",
+  "Air_time": "中文=通风时间;English=Air Time",
+  "Closed_position": "中文=封闭位置;English=Closed Position",
+  "Speed": "中文=速度;English=Speed",
+  "Position": "中文=位置;English=Position"
+}

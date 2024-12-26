@@ -1,0 +1,14 @@
+{
+  "Title":"中文=添加用户;English=AddUser;español=Añadir un usuario",
+  "ID":"中文=ID;English=ID;español=ID",
+  "Account":"中文=账号;English=Account;español=La cuenta",
+  "CardId":"中文=卡号;English=CardId;español=La tarjeta",
+  "FingerprintId":"中文=指纹;English=FingerprintId;español=Huellas dactilares",
+  "Password":"中文=密码;English=Password;español=La contraseña",
+  "Permissions":"中文=权限;English=Permissions;español=La competencia",
+  "Enable":"中文=是否启用;English=Enable;español=Sí no habilitado",
+  "Yes":"中文=是;English=Yes;español=es",
+  "No":"中文=否;English=No;español=si",
+  "Cancel":"中文=取消;English=Cancel;español=cancelación",
+  "Confirm":"中文=确认;English=OK;español=confirmación"
+}

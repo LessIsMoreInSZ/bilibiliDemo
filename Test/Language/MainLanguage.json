@@ -1,0 +1,10 @@
+{
+  "Settings":"中文=设置;English=Settings;español=La configuración",
+  "Maximize":"中文=最大化/默认;English=Maximize/Default;español=Maximizar/por defecto",
+  "Minimize":"中文=最小化;English=Minimize;español=minimizar",
+  "Logout":"中文=注销;English=Logout;español=cancelación",
+  "Close":"中文=关闭;English=Close;español=cierre",
+  "ExitTheSystem":"中文=是否要退出系统?;English=Whether to exit the system?;español=¿Quieres salir del sistema?",
+  "ClosePage":"中文=请确认是否关闭页面?;English=Please confirm whether to close the page?;español=¿Puede confirmar si cierra la página?",
+  "ClosePages":"中文=请确认是否关闭所有被允许关闭的页面?;English=Make sure to close all pages that are allowed to close?;español=¿Puede confirmar si cierra todas las páginas que se permiten cerrar?"
+}

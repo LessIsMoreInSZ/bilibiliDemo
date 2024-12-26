@@ -1,0 +1,19 @@
+{
+  "Add":"中文=添加;English=Add;español=añadir",
+  "Edit":"中文=修改;English=Edit;español=La modificación",
+  "Delete":"中文=删除;English=Delete;español=borrar",
+  "ID":"中文=ID;English=ID;español=ID",
+  "Account":"中文=账号;English=Account;español=La cuenta",
+  "CardId":"中文=卡号;English=CardId;español=La tarjeta",
+  "FingerprintId":"中文=指纹;English=FingerprintId;español=Huellas dactilares",
+  "Password":"中文=密码;English=Password;español=La contraseña",
+  "HeadPortrait":"中文=头像;English=HeadPortrait;español=avatares",
+  "Role":"中文=角色;English=Role;español=papel",
+  "Enable":"中文=是否启用;English=Enable;español=Sí no habilitado",
+  "AddSuccess":"中文=添加成功;English=Add Success;español=Añadido con éxito",
+  "AddFail":"中文=添加失败;English=Add Fail;español=Error al agregar",
+  "EditSuccess":"中文=修改成功;English=Edit Success;español=Modificado con éxito",
+  "EditFail":"中文=修改失败;English=Edit Fail;español=Modificación fallida",
+  "DeleteSuccess":"中文=删除成功;English=Delete Success;español=Eliminado con éxito",
+  "DeleteFail":"中文=删除失败;English=Delete Fail;español=Eliminación fallida"
+}

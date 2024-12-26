@@ -1,0 +1,22 @@
+{
+  "AccountLogin":"中文=账号登录;English=AccountLogin;español=Login de cuenta",
+  "ID":"中文=账号;English=ID;español=La cuenta",
+  "Password":"中文=密码;English=Password;español=La contraseña",
+  "Login":"中文=登录;English=Login;español=inicio",
+  "Guest":"中文=游客;English=Guest;español=Los turistas",
+  "CollectFinger":"中文=采集指纹;English=Collect Fingerprint;español=Toma huellas digitales",
+  "CollectRun":"中文=采集中......;English=Collecting......;español=En proceso de adquisición...",
+  "UnregisterFinger":"中文=指纹未注册;English=Fingerprint not registered,please register first;español=Huellas digitales no registradas",
+  "CollectSuccess":"中文=采集指纹成功.;English=Collect Fingerprint success;español=Toma de huellas dactilares con éxito.",
+  "CollectBad":"中文=指纹质量差,请重试;English=Fingerprint is bad ,please try again;español=Huellas digitales de mala calidad, por favor inténtelo de nuevo",
+  "CollectCancel":"中文=指纹任务被取消，有其他线程或者进程在使用指纹仪;English=The fingerprint task is cancelled because another thread or process is using the fingerprint reader;español=La tarea de huellas digitales se cancela y hay otros hilos o procesos usando el fingerprint",
+  "CollectStart":"中文=开始识别指纹, 请按手指;English=Start to collect fingerprint,please press your finger;español=Para comenzar a reconocer huellas dactilares, presione el dedo",
+  "ConnectSuccess":"中文=指纹仪连接成功;English=Fingerprint render connect success;español=Dactilar conectado con éxito",
+  "ConnectFail":"中文=指纹仪连接失败;English=Fingerprint render connect fail;español=La conexión del lector de huellas digitales falló",
+  "NotFound":"中文=找不到设备;English=Fingerprint render is not found;español=Dispositivo no encontrado",
+  "Tab1":"中文=账号密码登录;English=Sign in with Password;español=Cuenta contraseña login",
+  "Tab2":"中文=指纹登录;English=Sign in with Fingerprint;español=Huellas digitales login",
+  "Tab3":"中文=刷卡登录;English=Sign in with RFID;español=Login con tarjeta",
+  "RememberThePassword":"中文=记住密码;English=RememberThePassword;español=Recordar la contraseña",
+  "ForgetThePassword":"中文=忘记密码?;English=ForgetThePassword?;español=¿Olvidó su contraseña?"
+}

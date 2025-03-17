@@ -20,22 +20,22 @@ namespace TestMemorySharp
             //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
             #region low逼版
-            Console.WriteLine("开始内存泄漏测试...");
+            //Console.WriteLine("开始内存泄漏测试...");
 
-            // 循环分配内存（但不释放）
-            for (int i = 0; i < 10000; i++)
-            {
-                AllocateMemory(5000); // 分配1KB
-                Console.WriteLine($"分配第 {i + 1} 块内存");
-            }
-            Console.WriteLine("\n测试结束 - 内存未释放！");
+            //// 循环分配内存（但不释放）
+            //for (int i = 0; i < 10000; i++)
+            //{
+            //    AllocateMemory(5000); // 分配1KB
+            //    Console.WriteLine($"分配第 {i + 1} 块内存");
+            //}
+            //Console.WriteLine("\n测试结束 - 内存未释放！");
             #endregion
 
             //改进版
             IntPtr[] handles = new IntPtr[10000];
             for (int i = 0; i < 10000; i++)
             {
-                handles[i] = AllocateMemory(1);
+                handles[i] = AllocateMemory(5000);
             }
             Console.WriteLine($"分配完成，Private Bytes: {GetPrivateBytes()}");
 

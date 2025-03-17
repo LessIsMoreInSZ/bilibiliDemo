@@ -10,6 +10,7 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
+
     <StackPanel Orientation="Horizontal">
         <StackPanel>
             <Button
@@ -27,6 +28,20 @@
                 Content="Qudiao!" />
         </StackPanel>
 
-        <ContentControl prism:RegionManager.RegionName="MainViewRegionName" />
+
+        <!--<ContentControl prism:RegionManager.RegionName="MainViewRegionName" />-->
+
+
+        <TabControl prism:RegionManager.RegionName="MainViewRegionName" />
     </StackPanel>
+
+    <!--<Grid>
+        <StackPanel Width="100" Height="50">
+            <Button
+                Height="50"
+                Margin="0"
+                HorizontalAlignment="Stretch"
+                Content="66"/>
+        </StackPanel>
+    </Grid>-->
 </Window>

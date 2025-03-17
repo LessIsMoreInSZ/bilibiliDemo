@@ -20,850 +20,860 @@
     </UserControl.Resources>
 
     <Grid>
-        <DataGrid
-            x:Name="showDataGrid"
-            AutoGenerateColumns="False"
-            CanUserAddRows="False"
-            HorizontalScrollBarVisibility="Visible"
-            ItemsSource="{Binding ObcData2CsvModels}">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <DataGrid
+                x:Name="showDataGrid"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                HorizontalScrollBarVisibility="Visible"
+                ItemsSource="{Binding ObcData2CsvModels}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
 
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            d:Text="产品id"
-                            Text="{Binding DataContext.Data2CsvLanguage.Id, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ProductId}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            d:Text="方案名称"
-                            Text="{Binding DataContext.Data2CsvLanguage.Scheme, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding SchemeName}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            d:Text="起始位置"
-                            Text="{Binding DataContext.Data2CsvLanguage.Start, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding StartPosition}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            d:Text="结束位置"
-                            Text="{Binding DataContext.Data2CsvLanguage.Stop, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding StopPosition}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            d:Text="通风时间"
-                            Text="{Binding DataContext.Data2CsvLanguage.Air_time, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding TotalAir}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!--  通道  -->
-                <!--<DataGridTemplateColumn Visibility="{Binding DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">-->
-                <!--<DataGridTemplateColumn Visibility="Collapsed">-->
-                <!--<DataGridTemplateColumn Visibility="{Binding DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}}">-->
-                <!--<DataGridTemplateColumn Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=2}, Path=DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}}">-->
-                <!--<DataGridTemplateColumn Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}}">-->
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
-
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通道1">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
-                                    <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
-                                    <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel1}" />-->
-                            <CheckBox
+                            <TextBlock
                                 HorizontalAlignment="Center"
-                                IsChecked="{Binding UseChannel1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsEnabled="False" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                d:Text="产品id"
+                                Text="{Binding DataContext.Data2CsvLanguage.Id, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
 
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ProductId}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
-                    <DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
 
-                        <TextBlock HorizontalAlignment="Center" d:Text="通道2">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel2}" />-->
-                            <CheckBox
+                            <TextBlock
                                 HorizontalAlignment="Center"
-                                IsChecked="{Binding UseChannel2}"
-                                IsEnabled="False" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                d:Text="方案名称"
+                                Text="{Binding DataContext.Data2CsvLanguage.Scheme, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
 
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding SchemeName}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
-                    <DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
 
-                        <TextBlock HorizontalAlignment="Center" d:Text="通道3">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel3}" />-->
-                            <CheckBox
+                            <TextBlock
                                 HorizontalAlignment="Center"
-                                IsChecked="{Binding UseChannel3}"
-                                IsEnabled="False" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                d:Text="起始位置"
+                                Text="{Binding DataContext.Data2CsvLanguage.Start, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
 
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding StartPosition}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
-                    <DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
 
-                        <TextBlock HorizontalAlignment="Center" d:Text="通道4">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel4}" />-->
-                            <CheckBox
+                            <TextBlock
                                 HorizontalAlignment="Center"
-                                IsChecked="{Binding UseChannel4}"
-                                IsEnabled="False" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                d:Text="结束位置"
+                                Text="{Binding DataContext.Data2CsvLanguage.Stop, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
 
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding StopPosition}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
-                    <DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
 
-                        <TextBlock HorizontalAlignment="Center" d:Text="通道5">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel5}" />-->
-                            <CheckBox
+                            <TextBlock
                                 HorizontalAlignment="Center"
-                                IsChecked="{Binding UseChannel5}"
-                                IsEnabled="False" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通道6">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel6}" />-->
-                            <CheckBox
-                                HorizontalAlignment="Center"
-                                IsChecked="{Binding UseChannel6}"
-                                IsEnabled="False" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!--  最小压力  -->
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="最小压力1">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
-                                    <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
-                                    <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure1}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="最小压力2">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure2}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="最小压力3">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure3}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="最小压力4">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure4}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="最小压力5">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure5}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="最小压力6">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure6}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!--  反应时间  -->
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="反应时间1">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
-                                    <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
-                                    <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime1}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="反应时间2">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime2}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="反应时间3">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime3}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="反应时间4">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime4}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="反应时间5">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime5}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="反应时间6">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime6}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!--  通风时间  -->
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通风时间1">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
-                                    <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
-                                    <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime1}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通风时间2">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime2}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通风时间3">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime3}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通风时间4">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime4}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通风时间5">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime5}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="通风时间6">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime6}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!--  封闭位置  -->
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="封闭位置1">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
-                                    <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
-                                    <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition1}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="封闭位置2">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition2}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="封闭位置3">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition3}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="封闭位置4">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition4}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="封闭位置5">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition5}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="封闭位置6">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition6}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <!--  污染度  -->
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="污染度1">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
-                                    <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
-                                    <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree1}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="污染度2">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree2}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="污染度3">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree3}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="污染度4">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree4}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="污染度5">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree5}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-
-                <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
-                    <DataGridTemplateColumn.Header>
-
-                        <TextBlock HorizontalAlignment="Center" d:Text="污染度6">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
-                                    <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree6}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-            </DataGrid.Columns>
-        </DataGrid>
+                                d:Text="通风时间"
+                                Text="{Binding DataContext.Data2CsvLanguage.Air_time, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding TotalAir}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  通道  -->
+                    <!--<DataGridTemplateColumn Visibility="{Binding DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">-->
+                    <!--<DataGridTemplateColumn Visibility="Collapsed">-->
+                    <!--<DataGridTemplateColumn Visibility="{Binding DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}}">-->
+                    <!--<DataGridTemplateColumn Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=2}, Path=DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}}">-->
+                    <!--<DataGridTemplateColumn Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsChanelUse1, Converter={StaticResource BoolToVisibilityConverter}}">-->
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
+
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通道1">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
+                                        <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
+                                        <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel1}" />-->
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding UseChannel1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="False" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通道2">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel2}" />-->
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding UseChannel2}"
+                                    IsEnabled="False" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通道3">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel3}" />-->
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding UseChannel3}"
+                                    IsEnabled="False" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通道4">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel4}" />-->
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding UseChannel4}"
+                                    IsEnabled="False" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通道5">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel5}" />-->
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding UseChannel5}"
+                                    IsEnabled="False" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通道6">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Channel" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="{Binding UseChannel6}" />-->
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding UseChannel6}"
+                                    IsEnabled="False" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  最小压力  -->
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="最小压力1">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
+                                        <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
+                                        <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure1}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="最小压力2">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure2}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="最小压力3">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure3}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="最小压力4">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure4}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="最小压力5">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure5}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="最小压力6">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Min_pressure" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding MinPressure6}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  反应时间  -->
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="反应时间1">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
+                                        <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
+                                        <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime1}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="反应时间2">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime2}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="反应时间3">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime3}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="反应时间4">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime4}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="反应时间5">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime5}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="反应时间6">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Reaction_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ReactionTime6}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  通风时间  -->
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通风时间1">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
+                                        <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
+                                        <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime1}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通风时间2">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime2}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通风时间3">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime3}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通风时间4">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime4}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通风时间5">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime5}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="通风时间6">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Air_time" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding AirTime6}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  封闭位置  -->
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="封闭位置1">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
+                                        <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
+                                        <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition1}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="封闭位置2">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition2}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="封闭位置3">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition3}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="封闭位置4">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition4}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="封闭位置5">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition5}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="封闭位置6">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Closed_position" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding ClosedPosition6}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  污染度  -->
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable1}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="污染度1">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="1">
+                                        <!--<Binding Path="DataContext.Data2CsvLanguage.Stop" RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}, AncestorLevel=1}" />-->
+                                        <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree1}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable2}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="污染度2">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="2">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree2}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable3}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="污染度3">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="3">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree3}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable4}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="污染度4">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="4">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree4}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable5}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="污染度5">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="5">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree5}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Visibility="{Binding Value, Source={StaticResource CustomFreezable6}}">
+                        <DataGridTemplateColumn.Header>
+
+                            <TextBlock HorizontalAlignment="Center" d:Text="污染度6">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource StringConcatConverter}" ConverterParameter="6">
+                                        <Binding Path="DataContext.Data2CsvLanguage.Wurandu" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PollutionDegree6}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+
     </Grid>
 </UserControl>

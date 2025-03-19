@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>HMI 控制面板</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .button-container {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>HMI 控制面板</h1>
+
+    <div class="button-container">
+        <button id="momentaryButton">点动触发按钮</button>
+        <button id="holdButton">长按触发按钮</button>
+    </div>
+
+    <!-- 引入 Axios -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <!-- <script src="https://code.bdstatic.com/npm/axios@1.4.0/dist/axios.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+
+        // 配置
+        const API_ENDPOINT_POINT = 'https://localhost:7105/WeatherForecast/Momentary'; // Replace with the actual momentary API
+        const API_ENDPOINT_HOLD = 'https://localhost:7105/WeatherForecast/Holdtrigger';   // Replace with the actual hold API
+        const HOLD_DELAY = 1000; // Hold start time (milliseconds)
+        const HOLD_INTERVAL = 1000; // Hold interval time (milliseconds)
+
+        // Momentary trigger button logic
+        document.getElementById('momentaryButton').addEventListener('click', () => {
+            // Remove the httpsAgent option
+            axios.get(API_ENDPOINT_POINT)
+                .then(response => {
+                    console.log('Momentary request successful:', response.data);
+                    // You can update the UI or process the response data here
+                    const serializedData = JSON.stringify(response.data, null, 2);
+                    window.alert('点动请求成功，返回数据如下：\n' + serializedData);
+                })
+                .catch(error => {
+                    console.error('Momentary request failed:', error);
+                });
+        });
+
+      // 长按触发按钮逻辑
+    const holdButton = document.getElementById('holdButton');
+    let holdTimer = null;
+    let holdInterval = null;
+    // 添加标志位
+    let isMouseOut = false; 
+
+    holdButton.addEventListener('mousedown', () => {
+        isMouseOut = false;
+        console.log('鼠标按下，开始计时');
+        // 设置长按开始的延时
+        holdTimer = setTimeout(() => {
+            console.log('长按开始，开始定时发送请求');
+            // 开始定时发送请求
+            holdInterval = setInterval(() => {
+                // 检查标志位
+                if (!isMouseOut) { 
+                    console.log('发送长按请求');
+                    axios.get(API_ENDPOINT_HOLD)
+                       .then(response => {
+                            console.log('长按请求成功:', response.data);
+                            const serializedData = JSON.stringify(response.data, null, 2);
+                            window.alert('点动请求成功，返回数据如下：\n' + serializedData);
+                        })
+                       .catch(error => {
+                            console.error('长按请求失败:', error);
+                        });
+                        // 发送一次请求后清除定时器
+                    clearInterval(holdInterval);
+                    holdInterval = null;
+                }
+            }, HOLD_INTERVAL);
+        }, HOLD_DELAY);
+    });
+
+    // 监听鼠标松开事件，停止长按
+    holdButton.addEventListener('mouseup', () => {
+        console.log('鼠标松开，停止计时和请求');
+        clearTimeout(holdTimer);
+        if (holdInterval) {
+            clearInterval(holdInterval);
+            holdInterval = null;
+        }
+    });
+
+    // 监听鼠标移出按钮区域，停止长按
+    holdButton.addEventListener('mouseleave', () => {
+        console.log('鼠标移出，停止计时和请求');
+        isMouseOut = true;
+        clearTimeout(holdTimer);
+        if (holdInterval) {
+            clearInterval(holdInterval);
+            holdInterval = null;
+        }
+    });
+
+    // 可选：触摸设备支持
+    holdButton.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // 防止默认行为
+        console.log('触摸开始，模拟鼠标按下');
+        holdButton.dispatchEvent(new MouseEvent('mousedown'));
+    });
+
+    holdButton.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        console.log('触摸结束，模拟鼠标松开');
+        holdButton.dispatchEvent(new MouseEvent('mouseup'));
+    });
+
+    holdButton.addEventListener('touchcancel', (e) => {
+        e.preventDefault();
+        console.log('触摸取消，模拟鼠标松开');
+        holdButton.dispatchEvent(new MouseEvent('mouseup'));
+    });
+    </script>
+
+</body>
+</html>

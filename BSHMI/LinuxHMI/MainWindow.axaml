@@ -10,15 +10,20 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <!--  Welcome to Avalonia!  -->
-    <Grid>
-        <!--  使用 WindowsFormsHost 嵌入 WebView2  -->
-        <!--<wf:WindowsFormsHost x:Name="WebViewHost">
+    Welcome to Avalonia!
+    <!--<Grid>
+    -->
+    <!--  使用 WindowsFormsHost 嵌入 WebView2  -->
+    <!--
+    -->
+    <!--<wf:WindowsFormsHost x:Name="WebViewHost">
             <wv2:WebView2 x:Name="webView" />
         </wf:WindowsFormsHost>-->
+    <!--
+    -->
+    <!--<cef:ChromiumWebBrowser x:Name="Browser" Address="about:blank" />-->
+    <!--
 
-        <!--<cef:ChromiumWebBrowser x:Name="Browser" Address="about:blank" />-->
-
-    </Grid>
+    </Grid>-->
 
 </Window>

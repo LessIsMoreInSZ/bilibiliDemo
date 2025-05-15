@@ -15,7 +15,7 @@ namespace RuleEngine
             CustomTypes = new[] { typeof(IdCardUtil) }
         };
 
-        static async Task Main(string[] args)
+        static async Task Main2(string[] args)
         {
             //模拟用户的输入内容
             var userInput = new UserInput

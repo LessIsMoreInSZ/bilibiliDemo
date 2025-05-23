@@ -8,18 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Test3.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="RulesEngine" Version="5.0.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Test3.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

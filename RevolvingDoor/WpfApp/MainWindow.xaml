@@ -1,0 +1,207 @@
+﻿<Window x:Class="WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrls="clr-namespace:WpfApp.Controls"
+        xmlns:cvts="clr-namespace:WpfApp.Converters"
+        xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+        mc:Ignorable="d"
+        Height="720" Width="1280"
+        WindowStyle="None" WindowState="Maximized"
+        Background="#F0F0F0"
+        DataContext="{Binding Main,Source={StaticResource Locator}}">
+    <Window.Resources>
+        <!--画刷-->
+        <SolidColorBrush x:Key="Brushes.Theme.Hightlight" Color="#0154A5" options:Freeze="True" />
+        <SolidColorBrush x:Key="Brushes.Theme" Color="#0066CA" options:Freeze="True" />
+        <SolidColorBrush x:Key="Brushes.IdealForeground" Color="White" options:Freeze="True" />
+        <SolidColorBrush x:Key="Brushes.Gray" Color="#E6E6E6" options:Freeze="True" />
+        <SolidColorBrush x:Key="Brushes.Warning" Color="#F7F620" options:Freeze="True" />
+
+        <Style TargetType="{x:Type ctrls:Clock}">
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ctrls:Clock}">
+                        <StackPanel Orientation="Horizontal">
+                            <UniformGrid Rows="2">
+                                <TextBlock TextAlignment="Right" FontSize="24" VerticalAlignment="Top" Text="{Binding Time.DayOfWeek,RelativeSource={RelativeSource TemplatedParent},Converter={x:Static cvts:DayOfWeekConverter.Instance},ConverterCulture='zh-CN'}" />
+                                <TextBlock TextAlignment="Right" FontSize="21" VerticalAlignment="Bottom" Text="{Binding Time,RelativeSource={RelativeSource TemplatedParent},StringFormat='yyyy-MM-dd'}" />
+                            </UniformGrid>
+                            <Line Y2="70" Stroke="{StaticResource Brushes.Gray}" Margin="16 0 12 0"></Line>
+                            <TextBlock FontSize="50" VerticalAlignment="Center" Text="{Binding Time,RelativeSource={RelativeSource TemplatedParent},StringFormat='HH:mm'}" />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--叫号队列-->
+        <Style x:Key="Styles.CallQueue.Item" TargetType="{x:Type ctrls:CallQueueItem}">
+            <Setter Property="Padding" Value="11 0" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ctrls:CallQueueItem}">
+                        <Border Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock MinWidth="70" TextAlignment="Right" Text="{Binding No,StringFormat=000}" />
+                                <TextBlock Margin="34 0 0 0" Text="{Binding Name}" />
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsHead" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource Brushes.Warning}" />
+                </Trigger>
+                <!--<Trigger Property="IsNext" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource Brushes.Warning}" />
+                </Trigger>-->
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Styles.CallQueue" TargetType="{x:Type ctrls:CallQueue}">
+            <Setter Property="AlternationCount" Value="2" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ctrls:CallQueue}">
+                        <Canvas x:Name="PART_Canvas">
+                            <!--背景填充-->
+                            <Canvas.Resources>
+                                <Style x:Key="Styles.LastVisibleRows" TargetType="{x:Type ctrls:CallQueue}">
+                                    <Setter Property="AlternationCount" Value="2" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ctrls:CallQueue}">
+                                                <Canvas x:Name="PART_Canvas">
+                                                    <ItemsPresenter x:Name="PART_ItemsPresenter" Width="{Binding ActualWidth,ElementName=PART_Canvas}" />
+                                                </Canvas>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="ItemContainerStyle">
+                                        <Setter.Value>
+                                            <Style TargetType="{x:Type ctrls:CallQueueItem}">
+                                                <Setter Property="Background" Value="{StaticResource Brushes.Theme.Hightlight}" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ctrls:CallQueueItem}">
+                                                            <Rectangle Fill="{TemplateBinding Background}" />
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                                        <Setter Property="Background" Value="{x:Null}" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Canvas.Resources>
+                            <DockPanel Width="{Binding ActualWidth,ElementName=PART_Canvas}" Height="{Binding ActualHeight,ElementName=PART_Canvas}">
+                                <Rectangle DockPanel.Dock="Top" Height="{TemplateBinding HeadRowHeight}" Fill="{StaticResource Brushes.Theme.Hightlight}" />
+                                <Rectangle DockPanel.Dock="Top" Height="{TemplateBinding RenderRowHeight}" />
+                                <ctrls:CallQueue Style="{StaticResource Styles.LastVisibleRows}" ItemsSource="{Binding LastVisibleRowsCount,RelativeSource={RelativeSource TemplatedParent},Converter={x:Static cvts:CountToArrayConverter.Instance}}" 
+                                                 HeadRowHeight="NaN" NextRowHeight="NaN" />
+                            </DockPanel>
+                            <ItemsPresenter x:Name="PART_ItemsPresenter" Width="{Binding ActualWidth,ElementName=PART_Canvas}" />
+                        </Canvas>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle" Value="{StaticResource Styles.CallQueue.Item}" />
+        </Style>
+        
+        <!--叫号表-->
+        <Style x:Key="Styles.CallTable.Item" TargetType="{x:Type ctrls:CallTableItem}">
+            <Setter Property="BorderBrush" Value="{StaticResource Brushes.Gray}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ctrls:CallTableItem}">
+                        <DockPanel>
+                            <Line DockPanel.Dock="Right" Y2="1" Stretch="Uniform" StrokeThickness="1" Stroke="{TemplateBinding BorderBrush}" />
+                            <Border DockPanel.Dock="Top" Height="68" Background="{StaticResource Brushes.Theme.Hightlight}">
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" Text="{Binding DeptName}" />
+                            </Border>
+                            <Line DockPanel.Dock="Top" X2="1" Stretch="Uniform" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1" />
+                            <DockPanel DockPanel.Dock="Top" Height="110" DataContext="{Binding Doctor}">
+                                <Rectangle Width="76" StrokeThickness="1" Stroke="{TemplateBinding BorderBrush}" RadiusX="2" RadiusY="2" Margin="11">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="{Binding Avatar}" Stretch="UniformToFill" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <StackPanel VerticalAlignment="Center" Margin="4 0 11 0">
+                                    <Border HorizontalAlignment="Left" Background="{StaticResource Brushes.Warning}" Padding="6 3" CornerRadius="3">
+                                        <TextBlock FontSize="14" Foreground="Black" Text="{Binding Job}" />
+                                    </Border>
+                                    <TextBlock FontSize="26" Margin="0 8 0 0" Text="{Binding Name}" />
+                                </StackPanel>
+                            </DockPanel>
+                            <Line DockPanel.Dock="Top" X2="1" Stretch="Uniform" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1" />
+                            <ctrls:CallQueue Style="{StaticResource Styles.CallQueue}" Foreground="{TemplateBinding Foreground}" ItemsSource="{Binding Patients}" />
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Styles.CallTable" TargetType="{x:Type ctrls:CallTable}">
+            <Setter Property="Background" Value="{StaticResource Brushes.Theme}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Brushes.Gray}" />
+            <Setter Property="BorderThickness" Value="0 1" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Foreground" Value="{StaticResource Brushes.IdealForeground}" />
+            <Setter Property="DesiredColumnWidth" Value="240" />
+            <Setter Property="DesiredRowHeight" Value="60" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ctrls:CallTable}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Canvas x:Name="PART_Canvas" Margin="0 0 -1 0">
+                                <ItemsPresenter x:Name="PART_ItemsPresenter" Height="{Binding ActualHeight,ElementName=PART_Canvas}" />
+                            </Canvas>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle" Value="{StaticResource Styles.CallTable.Item}" />
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Height="100" Background="{StaticResource Brushes.Theme}" TextElement.Foreground="{StaticResource Brushes.IdealForeground}">
+            <DockPanel>
+                <TextBlock FontSize="34" VerticalAlignment="Center" Margin="50 0" Text="{Binding HospitalName}" />
+                <!--时钟-->
+                <ctrls:Clock DockPanel.Dock="Right" Margin="50 0" VerticalAlignment="Center" />
+                <TextBlock FontSize="62" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Title}" />
+            </DockPanel>
+        </Border>
+        <Border DockPanel.Dock="Bottom" Height="80" Background="{StaticResource Brushes.Theme.Hightlight}">
+            <DockPanel>
+                <Grid Panel.ZIndex="1">
+                    <Path Data="M0 0 H110 L90 24 L110 47 H0 Z" Fill="{StaticResource Brushes.Warning}" VerticalAlignment="Center" />
+                    <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-20 0 0 0">NEWS</TextBlock>
+                </Grid>
+                <!--滚动的文字-->
+                <ctrls:CarouselText FontSize="24" Foreground="{StaticResource Brushes.IdealForeground}" Space="200" Speed="100" Margin="-20 0 0 0" Text="{Binding CarouselText}" />
+            </DockPanel>
+        </Border>
+        <!--叫号队列-->
+        <ctrls:CallTable Style="{StaticResource Styles.CallTable}" ItemsSource="{Binding CallQueueDatas}" HeadRowHeight="80" Interval="5000" />
+    </DockPanel>
+</Window>

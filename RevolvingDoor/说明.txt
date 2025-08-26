@@ -1,0 +1,2 @@
+走马灯效果，原仓库地址：https://gitee.com/Pumbaa_Peng
+原博客地址：https://www.cnblogs.com/pumbaa/p/14298790.html

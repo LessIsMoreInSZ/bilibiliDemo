@@ -16,42 +16,93 @@
         <!-- Clock Face -->
         <Viewbox Grid.Row="0" Margin="20">
             <Grid Width="400" Height="400">
-                <!-- Outer Border -->
-                <Ellipse Stroke="#D4AF37" StrokeThickness="8" Fill="#EEEEEE">
-                    <Ellipse.Effect>
-                        <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.5"/>
-                    </Ellipse.Effect>
+                <Grid.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="10" Opacity="0.6"/>
+                </Grid.Effect>
+
+                <!-- 1. Bezel / Case (Outer Gold Ring) -->
+                <Ellipse StrokeThickness="12">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FDB931" Offset="0.0"/>
+                            <GradientStop Color="#9E7812" Offset="0.3"/>
+                            <GradientStop Color="#FDB931" Offset="0.6"/>
+                            <GradientStop Color="#F0E68C" Offset="0.8"/>
+                            <GradientStop Color="#9E7812" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                            <GradientStop Color="#2C2F33" Offset="0.0" />
+                            <GradientStop Color="#1A1C1F" Offset="1.0" />
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
                 </Ellipse>
+
+                <!-- Decoration: Inner Gold Rim -->
+                <Ellipse Margin="15" Stroke="#D4AF37" StrokeThickness="1"/>
+
+                <!-- Numbers Container -->
+                <Canvas x:Name="NumbersCanvas" Width="400" Height="400" />
 
                 <!-- Ticks Container -->
                 <Canvas x:Name="TicksCanvas" Width="400" Height="400" />
 
-                <!-- Hour Hand -->
-                <Rectangle x:Name="HourHand" Width="8" Height="100" Fill="Black" RadiusX="2" RadiusY="2"
-                           RenderTransformOrigin="0.5, 1" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Rectangle.RenderTransform>
-                        <RotateTransform x:Name="HourHandTransform" Angle="0"/>
-                    </Rectangle.RenderTransform>
-                </Rectangle>
+                <!-- Branding Text -->
+                <TextBlock Text="MINUTE REPEATER" Foreground="#888" FontSize="10" FontFamily="Times New Roman" 
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,110,0,0" />
 
-                <!-- Minute Hand -->
-                <Rectangle x:Name="MinuteHand" Width="4" Height="140" Fill="#444444" RadiusX="2" RadiusY="2"
-                           RenderTransformOrigin="0.5, 1" Margin="0,0,0,140" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Rectangle.RenderTransform>
-                        <RotateTransform x:Name="MinuteHandTransform" Angle="0"/>
-                    </Rectangle.RenderTransform>
-                </Rectangle>
+                <!-- Hour Hand (Fancy Shape) -->
+                <!-- Center is 200,200. Tip should point up. Tail down. -->
+                <!-- We define it pointing Up at 0,0 then rely on RenderTransform -->
+                <!-- Using Path to draw a nice spade or sword shape -->
+                <Path x:Name="HourHand" Fill="#D4AF37" Stroke="Black" StrokeThickness="0.5"
+                      Data="M -4,0 L -3,-60 L 0,-70 L 3,-60 L 4,0 L 0,10 Z"
+                      RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!-- Shift center of rotation to the 0,0 point of the geometry which is near the bottom circle -->
+                     <Path.RenderTransform>
+                         <TransformGroup>
+                            <TranslateTransform Y="-25" /> <!-- Move pivot point -->
+                            <RotateTransform x:Name="HourHandTransform" Angle="0"/>
+                         </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.4"/>
+                    </Path.Effect>
+                </Path>
+
+                <!-- Minute Hand (Fancy Shape) -->
+                <Path x:Name="MinuteHand" Fill="#E0E0E0" Stroke="Black" StrokeThickness="0.5"
+                      Data="M -3,0 L -2,-90 L 0,-100 L 2,-90 L 3,0 L 0,15 Z"
+                      RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-35" />
+                            <RotateTransform x:Name="MinuteHandTransform" Angle="0"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Effect>
+                        <DropShadowEffect ShadowDepth="3" BlurRadius="3" Opacity="0.4"/>
+                    </Path.Effect>
+                </Path>
 
                 <!-- Second Hand -->
-                <Rectangle x:Name="SecondHand" Width="2" Height="160" Fill="#B22222"
-                           RenderTransformOrigin="0.5, 1" Margin="0,0,0,160" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Rectangle.RenderTransform>
+                <Grid x:Name="SecondHand" Width="10" Height="220" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5, 0.5">
+                     <Grid.RenderTransform>
                         <RotateTransform x:Name="SecondHandTransform" Angle="0"/>
-                    </Rectangle.RenderTransform>
-                </Rectangle>
+                    </Grid.RenderTransform>
 
-                <!-- Center Pin -->
-                <Ellipse Width="16" Height="16" Fill="#D4AF37" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <!-- Simple thin red line with tail -->
+                    <Path Fill="#B22222" Data="M -0.5,40 L -0.5,-120 L 0.5,-120 L 0.5,40 Z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Ellipse Width="6" Height="6" Fill="#B22222" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,160"/> 
+                </Grid>
+
+                <!-- Center Pin (Cap) -->
+                <Ellipse Width="12" Height="12" Fill="Black" Stroke="#D4AF37" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                     <Ellipse.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="2"/>
+                    </Ellipse.Effect>
+                </Ellipse>
                 
             </Grid>
         </Viewbox>

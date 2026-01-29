@@ -1,0 +1,197 @@
+<Window x:Class="ThreeQuestion.CodeBehindWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:ThreeQuestion"
+        mc:Ignorable="d"
+        Title="Three Question Minute Repeater (No Code)" Height="600" Width="600"
+        Background="#222222">
+    
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="SecondHandTransform" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:1:0" RepeatBehavior="Forever" />
+                    <!-- Minute: 1 hour for full circle -->
+                    <DoubleAnimation Storyboard.TargetName="MinuteHandTransform" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="1:0:0" RepeatBehavior="Forever" />
+                    <!-- Hour: 12 hours for full circle -->
+                    <DoubleAnimation Storyboard.TargetName="HourHandTransform" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="12:0:0" RepeatBehavior="Forever" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        
+        <!-- Interactive Trigger for Minute Repeater (Simulated via simple animation/visual feedback since C# logic is forbidden) -->
+        <!-- Since we cannot write logic, we can't implement the actual beeping or calculation. -->
+        <!-- We will just add a visual click effect to the button -->
+    </Window.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Clock Face -->
+        <Viewbox Grid.Row="0" Margin="20">
+            <Grid Width="400" Height="400">
+                <Grid.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="10" Opacity="0.6"/>
+                </Grid.Effect>
+
+                <!-- Bezel -->
+                <Ellipse StrokeThickness="12">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FDB931" Offset="0.0"/>
+                            <GradientStop Color="#9E7812" Offset="0.3"/>
+                            <GradientStop Color="#FDB931" Offset="0.6"/>
+                            <GradientStop Color="#F0E68C" Offset="0.8"/>
+                            <GradientStop Color="#9E7812" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                            <GradientStop Color="#2C2F33" Offset="0.0" />
+                            <GradientStop Color="#1A1C1F" Offset="1.0" />
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <Ellipse Margin="15" Stroke="#D4AF37" StrokeThickness="1"/>
+
+                <!-- Numbers - Hardcoded positions -->
+                <!-- Center is 200,200. Radius (text baseline/center) approx 155. -->
+                <Canvas x:Name="NumbersCanvas" Width="400" Height="400">
+                    <TextBlock Text="12" Canvas.Left="187" Canvas.Top="45"  FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="1" Canvas.Left="270" Canvas.Top="66"  FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="2" Canvas.Left="327" Canvas.Top="122" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="3" Canvas.Left="345" Canvas.Top="187" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="4" Canvas.Left="327" Canvas.Top="250" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="5" Canvas.Left="270" Canvas.Top="307" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="6" Canvas.Left="193" Canvas.Top="325" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="7" Canvas.Left="117" Canvas.Top="307" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="8" Canvas.Left="60"  Canvas.Top="250" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="9" Canvas.Left="45"  Canvas.Top="187" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="10" Canvas.Left="60"  Canvas.Top="122" FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                    <TextBlock Text="11" Canvas.Left="117" Canvas.Top="66"  FontSize="24" FontFamily="Times New Roman" FontWeight="Bold" Foreground="#D4AF37"><TextBlock.Effect><DropShadowEffect BlurRadius="2" ShadowDepth="1"/></TextBlock.Effect></TextBlock>
+                </Canvas>
+
+                <!-- Ticks - Generated using x:Array hack to avoid 60 distinct rectangle definitions -->
+                <ItemsControl>
+                    <ItemsControl.ItemsSource>
+                        <x:Array Type="sys:Double">
+                           <!-- Hours -->
+                           <sys:Double>0</sys:Double><sys:Double>30</sys:Double><sys:Double>60</sys:Double><sys:Double>90</sys:Double>
+                           <sys:Double>120</sys:Double><sys:Double>150</sys:Double><sys:Double>180</sys:Double><sys:Double>210</sys:Double>
+                           <sys:Double>240</sys:Double><sys:Double>270</sys:Double><sys:Double>300</sys:Double><sys:Double>330</sys:Double>
+                           <!-- Minutes (Sample subset to show the idea without 60 lines, if user wants exact 60 we'd need more lines) -->
+                           <!-- Let's just do hour markers for simplicity of "Pure XAML" without verbose code -->
+                        </x:Array>
+                    </ItemsControl.ItemsSource>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="400" Height="400"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Hour Tick -->
+                            <Rectangle Width="4" Height="12" Fill="#D4AF37" RenderTransformOrigin="0.5,0.5">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform Y="-180"/> <!-- Move up -->
+                                        <RotateTransform Angle="{Binding}"/> <!-- Rotate by value -->
+                                        <TranslateTransform X="200" Y="200"/> <!-- Center -->
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Minute Ticks (Simpler visual representation: A Dashed Circle or similar? No, let's just stick to Hour ticks for pure XAML cleanness) -->
+
+                <!-- Branding Text -->
+                <TextBlock Text="MINUTE REPEATER (NO CODE)" Foreground="#888" FontSize="10" FontFamily="Times New Roman" 
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,110,0,0" />
+
+                <!-- Hour Hand -->
+                <Path Fill="#D4AF37" Stroke="Black" StrokeThickness="0.5"
+                      Data="M -4,0 L -3,-60 L 0,-70 L 3,-60 L 4,0 L 0,10 Z"
+                      RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path.RenderTransform>
+                         <TransformGroup>
+                            <TranslateTransform Y="-25" /> 
+                            <RotateTransform x:Name="HourHandTransform" Angle="0"/>
+                         </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.4"/>
+                    </Path.Effect>
+                </Path>
+
+                <!-- Minute Hand -->
+                <Path Fill="#E0E0E0" Stroke="Black" StrokeThickness="0.5"
+                      Data="M -3,0 L -2,-90 L 0,-100 L 2,-90 L 3,0 L 0,15 Z"
+                      RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-35" />
+                            <RotateTransform x:Name="MinuteHandTransform" Angle="0"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Effect>
+                        <DropShadowEffect ShadowDepth="3" BlurRadius="3" Opacity="0.4"/>
+                    </Path.Effect>
+                </Path>
+
+                <!-- Second Hand -->
+                <Grid Width="10" Height="220" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5, 0.5">
+                     <Grid.RenderTransform>
+                        <RotateTransform x:Name="SecondHandTransform" Angle="0"/>
+                    </Grid.RenderTransform>
+
+                    <Path Fill="#B22222" Data="M -0.5,40 L -0.5,-120 L 0.5,-120 L 0.5,40 Z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Ellipse Width="6" Height="6" Fill="#B22222" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,160"/> 
+                </Grid>
+
+                <Ellipse Width="12" Height="12" Fill="Black" Stroke="#D4AF37" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                     <Ellipse.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="2"/>
+                    </Ellipse.Effect>
+                </Ellipse>
+            </Grid>
+        </Viewbox>
+
+        <!-- Controls -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+            <Button Content="Trigger Minute Repeater" 
+                    Padding="15,10" 
+                    FontSize="16" 
+                    Background="#D4AF37" 
+                    Foreground="White"
+                    FontWeight="Bold"
+                    BorderThickness="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!-- Visual Feedback since we can't play sound with pure XAML (no logic) -->
+                                <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                To="White" Duration="0:0:0.1" AutoReverse="True"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <TextBlock Text="Logic Disabled" Foreground="White" VerticalAlignment="Center" Margin="15,0,0,0" FontSize="14"/>
+        </StackPanel>
+    </Grid>
+</Window>

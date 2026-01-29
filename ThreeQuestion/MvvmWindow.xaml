@@ -1,0 +1,187 @@
+<Window x:Class="ThreeQuestion.MvvmWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ThreeQuestion.ViewModels"
+        mc:Ignorable="d"
+        Title="Three Question Minute Repeater (MVVM)" Height="600" Width="600"
+        Background="#222222">
+    
+    <!-- Instantiate ViewModel in Resources or DataContext -->
+    <Window.DataContext>
+        <vm:ClockViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Use a Viewbox so the hardcoded 400x400 coordinates scale -->
+        <Viewbox Grid.Row="0" Margin="20">
+            <Grid Width="400" Height="400">
+                <Grid.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="10" Opacity="0.6"/>
+                </Grid.Effect>
+
+                <!-- Bezel -->
+                <Ellipse StrokeThickness="12">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FDB931" Offset="0.0"/>
+                            <GradientStop Color="#9E7812" Offset="0.3"/>
+                            <GradientStop Color="#FDB931" Offset="0.6"/>
+                            <GradientStop Color="#F0E68C" Offset="0.8"/>
+                            <GradientStop Color="#9E7812" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                            <GradientStop Color="#2C2F33" Offset="0.0" />
+                            <GradientStop Color="#1A1C1F" Offset="1.0" />
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <Ellipse Margin="15" Stroke="#D4AF37" StrokeThickness="1"/>
+
+                <!-- Numbers ItemsControl -->
+                <!-- We use an ItemsControl to bind to the Numbers collection -->
+                <ItemsControl ItemsSource="{Binding Numbers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="400" Height="400"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- We render the text block then Translate it by -50%, -50% to center at X,Y -->
+                            <TextBlock Text="{Binding Text}" 
+                                       FontSize="24"
+                                       FontFamily="Times New Roman"
+                                       FontWeight="Bold"
+                                       Foreground="#D4AF37"
+                                       RenderTransformOrigin="0.5, 0.5">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="1" Opacity="0.8"/>
+                                </TextBlock.Effect>
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform X="-10" Y="-15"/> <!-- Approximate centering, or use more complex binding -->
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Ticks ItemsControl -->
+                <ItemsControl ItemsSource="{Binding Ticks}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="400" Height="400"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Rectangle Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <!-- Approximate centering based on fixed Max dimensions for simplicy in pure XAML binding -->
+                                        <!-- Ideally we use a converter, but I want to avoid adding more files -->
+                                        <TranslateTransform X="-2" Y="-6"/> 
+                                        
+                                        <TranslateTransform Y="-180"/>
+                                        <RotateTransform Angle="{Binding Angle}"/>
+                                        <TranslateTransform X="200" Y="200"/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                                <!-- Fix initial offset because Translate Y=-180 assumes origin is top-left.
+                                     We want the MIDDLE of the tick at radius 180? Or top?
+                                     Let's just align the rectangle so its center is at 0,0 before the first translate.
+                                     Since we can't use a converter easily without adding a file, 
+                                     we can use Margin to offset. Margin = -Width/2, -Height/2, 0, 0
+                                     But Margin isn't bindable to Width/Height easily.
+                                     
+                                     We will skip exact centering of the tick thickness for simplicity, or assume Width is small enough.
+                                     Or use RenderTransformOrigin="0.5, 0.5" on the Rectangle?
+                                     Yes. If RenderTransformOrigin is 0.5,0.5, the rotation happens around center.
+                                     But the Translate Y=-180 moves the CENTER up 180. That's perfect.
+                                -->
+                                <Rectangle.RenderTransformOrigin>0.5,0.5</Rectangle.RenderTransformOrigin>
+                            </Rectangle>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="MINUTE REPEATER" Foreground="#888" FontSize="10" FontFamily="Times New Roman" 
+                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,110,0,0" />
+
+                <!-- Hour Hand -->
+                <Path Fill="#D4AF37" Stroke="Black" StrokeThickness="0.5"
+                      Data="M -4,0 L -3,-60 L 0,-70 L 3,-60 L 4,0 L 0,10 Z"
+                      RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-25" />
+                            <RotateTransform Angle="{Binding HourAngle}"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.4"/>
+                    </Path.Effect>
+                </Path>
+
+                <!-- Minute Hand -->
+                <Path Fill="#E0E0E0" Stroke="Black" StrokeThickness="0.5"
+                      Data="M -3,0 L -2,-90 L 0,-100 L 2,-90 L 3,0 L 0,15 Z"
+                      RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-35" />
+                            <RotateTransform Angle="{Binding MinuteAngle}"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                    <Path.Effect>
+                        <DropShadowEffect ShadowDepth="3" BlurRadius="3" Opacity="0.4"/>
+                    </Path.Effect>
+                </Path>
+
+                <!-- Second Hand -->
+                <Grid Width="10" Height="220" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5, 0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="{Binding SecondAngle}"/>
+                    </Grid.RenderTransform>
+                    <Path Fill="#B22222" Data="M -0.5,40 L -0.5,-120 L 0.5,-120 L 0.5,40 Z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Ellipse Width="6" Height="6" Fill="#B22222" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,160"/> 
+                </Grid>
+
+                <Ellipse Width="12" Height="12" Fill="Black" Stroke="#D4AF37" StrokeThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Ellipse.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="2"/>
+                    </Ellipse.Effect>
+                </Ellipse>
+            </Grid>
+        </Viewbox>
+
+        <!-- Controls -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+            <Button Content="Trigger Minute Repeater (三问报时)" 
+                    Command="{Binding MinuteRepeaterCommand}"
+                    Padding="15,10" FontSize="16" Background="#D4AF37" Foreground="White" FontWeight="Bold" BorderThickness="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <TextBlock Text="{Binding StatusText}" Foreground="White" VerticalAlignment="Center" Margin="15,0,0,0" FontSize="14"/>
+        </StackPanel>
+    </Grid>
+</Window>

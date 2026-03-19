@@ -5,11 +5,17 @@ namespace CrashTest.Unified;
 
 public sealed class CrashSelectorForm : Form
 {
+    /// <summary>
+    /// 初始化崩溃选择窗体并构建界面。
+    /// </summary>
     public CrashSelectorForm()
     {
         InitializeComponents();
     }
 
+    /// <summary>
+    /// 创建窗体布局、崩溃按钮和底部提示信息。
+    /// </summary>
     private void InitializeComponents()
     {
         Text = "CrashTest Unified - 选择崩溃类型";
@@ -102,6 +108,11 @@ public sealed class CrashSelectorForm : Form
         Controls.Add(mainLayout);
     }
 
+    /// <summary>
+    /// 为不同崩溃类型返回固定颜色，便于界面上区分。
+    /// </summary>
+    /// <param name="key">崩溃类型缩写。</param>
+    /// <returns>对应按钮颜色。</returns>
     private static Color GetColorForCrashType(string key) => key switch
     {
         "av" => Color.Firebrick,

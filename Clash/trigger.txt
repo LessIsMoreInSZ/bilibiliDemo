@@ -1,0 +1,571 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace CrashTest.Unified
+{
+    /// <summary>
+    /// 统一崩溃触发器 - 包含所有典型闪退场景
+    /// </summary>
+    public static class CrashTrigger
+    {
+        private static readonly Dictionary<string, Action> _triggers = new()
+        {
+            ["av"] = TriggerAccessViolation,           // 内存访问冲突 C0000005
+            ["so"] = TriggerStackOverflow,             // 堆栈溢出 C00000FD
+            ["hc"] = TriggerHeapCorruption,            // 堆损坏 C0000374
+            ["dz"] = TriggerDivideByZero,              // 除零异常
+            ["nr"] = TriggerNullReference,             // 空引用
+            ["oom"] = TriggerOutOfMemory,              // 内存耗尽
+            ["dl"] = TriggerDeadlock,                  // 死锁（UI卡死）
+            ["md"] = TriggerMissingDll,                // 缺失DLL
+            ["ue"] = TriggerUnhandledException,        // 未处理异常
+            ["ta"] = TriggerThreadAbort,               // 线程中止
+            ["se"] = TriggerSecurityException,         // 安全异常
+            ["pf"] = TriggerPageFault,                 // 页面错误
+            ["sf"] = TriggerStackBufferOverflow,       // 栈缓冲区溢出
+            ["io"] = TriggerFatalIOError,              // 致命IO错误
+            ["gc"] = TriggerGCFatal,                  // GC致命错误
+            ["jit"] = TriggerJitFatal,                 // JIT编译器错误
+	["tc"] = TriggerThreadContention,    // 线程竞争/死锁变体
+    ["hl"] = TriggerHandleLeak,          // 句柄泄漏（最终耗尽崩溃）
+    ["com"] = TriggerCOMCrash,           // COM组件崩溃
+        };
+
+        /// <summary>
+        /// 获取所有可用的崩溃类型
+        /// </summary>
+        public static IReadOnlyDictionary<string, (string Name, string Description, uint? ExitCode)> GetAvailableCrashes()
+        {
+            return new Dictionary<string, (string, string, uint?)>
+            {
+                ["av"] = ("Access Violation", "内存访问冲突 - 读写无效地址", 0xC0000005),
+                ["so"] = ("Stack Overflow", "堆栈溢出 - 无限递归或过大栈分配", 0xC00000FD),
+                ["hc"] = ("Heap Corruption", "堆损坏 - 破坏内存管理结构", 0xC0000374),
+                ["dz"] = ("Divide By Zero", "除零错误 - 整数除以零", 0xC0000094),
+                ["nr"] = ("Null Reference", "空引用 - 访问null对象", 0xE0434352),
+                ["oom"] = ("Out Of Memory", "内存耗尽 - 无法分配更多内存", null),
+                ["dl"] = ("Deadlock", "死锁 - 线程互相等待（需强制终止）", null),
+                ["md"] = ("Missing DLL", "缺失DLL - 找不到依赖库", 0xC0000135),
+                ["ue"] = ("Unhandled Exception", "未处理异常 - 全局异常未捕获", 0xE0434352),
+                ["ta"] = ("Thread Abort", "线程中止 - 异步线程异常", 0xE0434352),
+                ["se"] = ("Security Exception", "安全异常 - 权限不足", 0xE0434352),
+                ["pf"] = ("Page Fault", "页面错误 - 访问未提交内存", 0xC0000006),
+                ["sf"] = ("Stack Buffer Overflow", "栈缓冲区溢出 - 局部数组越界", 0xC0000409),
+                ["io"] = ("Fatal IO Error", "致命IO错误 - 磁盘/网络故障", null),
+                ["gc"] = ("GC Fatal", "GC致命错误 - 垃圾回收器损坏", 0xE0434352),
+                ["jit"] = ("JIT Fatal", "JIT错误 - 编译器内部错误", 0xE0434352),
+            };
+        }
+
+        /// <summary>
+        /// 执行指定类型的崩溃
+        /// </summary>
+        public static void Execute(string crashType)
+        {
+            var key = crashType.ToLower().Trim();
+            if (_triggers.TryGetValue(key, out var action))
+            {
+                Console.WriteLine($"[CrashTest] 正在触发: {key.ToUpper()}");
+                Thread.Sleep(500); // 给日志时间输出
+                action();
+            }
+            else
+            {
+                Console.WriteLine($"[CrashTest] 未知类型: {crashType}");
+                Console.WriteLine("可用类型: " + string.Join(", ", _triggers.Keys));
+                Environment.Exit(1);
+            }
+        }
+
+        // ==================== 1. 内存访问冲突 (0xC0000005) ====================
+        private static unsafe void TriggerAccessViolation()
+        {
+            // 方法1: 写入只读内存区
+            try
+            {
+                string ro = "readonly_string_in_datasegment";
+                fixed (char* p = ro)
+                {
+                    *(p + 2) = 'X'; // 尝试修改只读数据段
+                }
+            }
+            catch { }
+
+            // 方法2: 访问无效地址（更可靠）
+            int* ptr = (int*)0x00000001;
+            *ptr = 0xDEADBEEF;
+        }
+
+        // ==================== 2. 堆栈溢出 (0xC00000FD) ====================
+        private static void TriggerStackOverflow()
+        {
+            EatStack(0);
+        }
+
+        private static void EatStack(int depth)
+        {
+            // 分配大块栈内存加速溢出
+            Span<byte> buffer = stackalloc byte[8192];
+            buffer[0] = (byte)depth;
+            buffer[buffer.Length - 1] = (byte)(depth >> 8);
+            
+            // 递归
+            EatStack(depth + 1);
+        }
+
+        // ==================== 3. 堆损坏 (0xC0000374) ====================
+        private static unsafe void TriggerHeapCorruption()
+        {
+            IntPtr ptr = Marshal.AllocHGlobal(16);
+            byte* p = (byte*)ptr;
+            
+            // 严重越界写入，破坏堆管理结构
+            for (int i = 0; i < 10000; i++)
+            {
+                *(p + i) = 0xCC;
+            }
+            
+            // 释放时会检测到损坏
+            Marshal.FreeHGlobal(ptr);
+            GC.Collect();
+        }
+
+        // ==================== 4. 除零错误 (0xC0000094) ====================
+        private static void TriggerDivideByZero()
+        {
+            int zero = 0;
+            // 使用volatile防止编译器优化
+            var result = 100 / System.Runtime.CompilerServices.Unsafe.As<int, VolatileInt>(ref zero).Value;
+            Console.WriteLine(result);
+        }
+
+        private struct VolatileInt { public int Value; }
+
+        // ==================== 5. 空引用 (0xE0434352) ====================
+        private static void TriggerNullReference()
+        {
+            string? s = null;
+            // 禁用编译器检查，强制解引用
+            System.Runtime.CompilerServices.Unsafe.As<string?, string>(ref s).ToString();
+        }
+
+        // ==================== 6. 内存耗尽 ====================
+        private static void TriggerOutOfMemory()
+        {
+            var list = new List<byte[]>();
+            try
+            {
+                while (true)
+                {
+                    // 每次分配50MB并实际写入
+                    var chunk = new byte[50 * 1024 * 1024];
+                    for (int i = 0; i < chunk.Length; i += 4096)
+                        chunk[i] = 1;
+                    list.Add(chunk);
+                }
+            }
+            catch (OutOfMemoryException)
+            {
+                // 捕获后继续分配，直到进程被杀死
+                TriggerOutOfMemory();
+            }
+        }
+
+        // ==================== 7. 死锁 ====================
+        private static readonly object LockA = new();
+        private static readonly object LockB = new();
+
+        private static void TriggerDeadlock()
+        {
+            var t1 = new Thread(() =>
+            {
+                lock (LockA)
+                {
+                    Thread.Sleep(200);
+                    lock (LockB) { }
+                }
+            });
+            
+            var t2 = new Thread(() =>
+            {
+                lock (LockB)
+                {
+                    Thread.Sleep(200);
+                    lock (LockA) { }
+                }
+            });
+            
+            t1.Start();
+            t2.Start();
+            t1.Join(); // 永远等待
+        }
+
+        // ==================== 8. 缺失DLL (0xC0000135) ====================
+        [DllImport("DefinitelyNotExist_" + nameof(TriggerMissingDll) + ".dll")]
+        private static extern void NonExistentFunction();
+
+        private static void TriggerMissingDll()
+        {
+            NonExistentFunction();
+        }
+
+        // ==================== 9. 未处理异常 ====================
+        private static void TriggerUnhandledException()
+        {
+            Task.Run(() =>
+            {
+                throw new InvalidOperationException("这是一个未处理的异步异常");
+            });
+            
+            // 主线程也抛出
+            throw new Exception("主线程未处理异常");
+        }
+
+        // ==================== 10. 线程中止 ====================
+        private static void TriggerThreadAbort()
+        {
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    Thread.Sleep(Timeout.Infinite);
+                }
+                catch (ThreadAbortException)
+                {
+                    // 捕获后重新抛出
+                    throw;
+                }
+            });
+            thread.Start();
+            Thread.Sleep(100);
+            thread.Abort(); // 已过时但仍能触发异常
+        }
+
+        // ==================== 11. 安全异常 ====================
+        private static void TriggerSecurityException()
+        {
+            // 尝试访问受限资源
+            System.Security.Permissions.FileIOPermission perm = 
+                new(System.Security.Permissions.PermissionState.None);
+            perm.Assert(); // 错误使用权限
+            System.IO.File.WriteAllText(@"C:\Windows\System32\test.txt", "hacked");
+        }
+
+        // ==================== 12. 页面错误 (0xC0000006) ====================
+        private static unsafe void TriggerPageFault()
+        {
+            // 保留内存但不提交
+            IntPtr ptr = VirtualAlloc(IntPtr.Zero, 4096, 0x2000, 0x01); // MEM_RESERVE, PAGE_NOACCESS
+            int* p = (int*)ptr;
+            int x = *p; // 访问保留但未提交的内存
+            Console.WriteLine(x);
+        }
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+
+        // ==================== 13. 栈缓冲区溢出 ====================
+        private static unsafe void TriggerStackBufferOverflow()
+        {
+            // 使用不安全的栈分配
+            int* buffer = stackalloc int[10];
+            for (int i = 0; i < 1000000; i++)
+            {
+                buffer[i] = i; // 严重越界，覆盖返回地址
+            }
+        }
+
+        // ==================== 14. 致命IO错误 ====================
+        private static void TriggerFatalIOError()
+        {
+            // 打开设备直接IO，然后拔掉设备
+            var handle = CreateFile(@"\\.\PhysicalDrive999", 0x80000000, 0, IntPtr.Zero, 3, 0, IntPtr.Zero);
+            if (handle == new IntPtr(-1))
+            {
+                // 打开失败，尝试其他方式
+                System.IO.File.Open(@"\\.\NONEXISTENT_DEVICE", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.None);
+            }
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode, IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+        // ==================== 15. GC致命错误 ====================
+        private static unsafe void TriggerGCFatal()
+        {
+            // 破坏GC堆结构
+            var obj = new object();
+            fixed (byte* p = new byte[1])
+            {
+                // 尝试破坏GC句柄表
+                IntPtr* ptr = (IntPtr*)p;
+                for (int i = -10000; i < 10000; i++)
+                {
+                    *(ptr + i) = (IntPtr)0xDEADBEEF;
+                }
+            }
+            GC.Collect(2, GCCollectionMode.Aggressive, true, true);
+        }
+
+        // ==================== 16. JIT致命错误 ====================
+        private static void TriggerJitFatal()
+        {
+            // 使用动态方法生成无效IL
+            var dm = new System.Reflection.Emit.DynamicMethod("Broken", typeof(void), Type.EmptyTypes);
+            var il = dm.GetILGenerator();
+            // 生成不平衡的IL栈
+            il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4, 1);
+            il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4, 2);
+            // 缺少Add操作，直接返回会导致JIT错误
+            il.Emit(System.Reflection.Emit.OpCodes.Ret);
+            
+            var del = (Action)dm.CreateDelegate(typeof(Action));
+            del(); // 执行损坏的方法
+        }
+    }
+
+// ==================== 17. 线程竞争/高并发锁争用 ====================
+private static void TriggerThreadContention()
+{
+    var sharedResource = new object();
+    var threads = new List<Thread>();
+    var cpuCount = Environment.ProcessorCount;
+    
+    Console.WriteLine($"启动 {cpuCount * 4} 个线程进行锁竞争...");
+    
+    // 创建大量线程竞争同一把锁
+    for (int i = 0; i < cpuCount * 4; i++)
+    {
+        var thread = new Thread(() =>
+        {
+            while (true)
+            {
+                // 极度频繁的锁切换
+                lock (sharedResource)
+                {
+                    // 持有锁时做一点工作
+                    for (int j = 0; j < 1000; j++)
+                    {
+                        Math.Sqrt(j);
+                    }
+                }
+                // 立即再次尝试获取锁，造成激烈竞争
+            }
+        });
+        thread.Priority = ThreadPriority.Highest;
+        threads.Add(thread);
+        thread.Start();
+    }
+
+    // 主线程也参与竞争，导致UI完全卡死
+    while (true)
+    {
+        lock (sharedResource)
+        {
+            Thread.Sleep(1);
+        }
+    }
+}
+// ==================== 18. 句柄泄漏 ====================
+private static void TriggerHandleLeak()
+{
+    // 方法1: 创建文件句柄但不关闭
+    Task.Run(() =>
+    {
+        while (true)
+        {
+            try
+            {
+                // 创建文件句柄但不释放
+                var handle = CreateFile(
+                    @"C:\Windows\System32\kernel32.dll",
+                    0x80000000, // GENERIC_READ
+                    0,
+                    IntPtr.Zero,
+                    3, // OPEN_EXISTING
+                    0,
+                    IntPtr.Zero);
+                
+                // 故意不调用 CloseHandle，泄漏句柄
+                // 系统句柄表最终会耗尽
+            }
+            catch { }
+        }
+    });
+
+    // 方法2: 创建线程句柄但不释放
+    Task.Run(() =>
+    {
+        var threads = new List<Thread>();
+        while (true)
+        {
+            var t = new Thread(() => Thread.Sleep(Timeout.Infinite));
+            t.Start();
+            threads.Add(t);
+            // 不 Join，不清理，线程句柄泄漏
+            
+            if (threads.Count % 1000 == 0)
+            {
+                Console.WriteLine($"已泄漏 {threads.Count} 个线程句柄");
+                GC.Collect(); // 强制GC也无法回收线程句柄
+            }
+        }
+    });
+
+    // 方法3: GDI句柄泄漏（WinForm相关）
+    Task.Run(() =>
+    {
+        while (true)
+        {
+            // 创建GDI对象但不释放
+            var font = new Font("Arial", 12);
+            var brush = new SolidBrush(Color.Red);
+            var pen = new Pen(Color.Black);
+            var bitmap = new Bitmap(100, 100);
+            var graphics = Graphics.FromImage(bitmap);
+            
+            // 不调用 Dispose，泄漏GDI句柄
+            // 当达到10000个GDI句柄限制时进程会崩溃
+        }
+    });
+
+    // 主线程监控句柄数
+    while (true)
+    {
+        var proc = Process.GetCurrentProcess();
+        Console.WriteLine($"Handles: {proc.HandleCount}, Threads: {proc.Threads.Count, GDI: {GetGDIHandleCount()}");
+        Thread.Sleep(1000);
+    }
+}
+
+// 获取GDI句柄数（P/Invoke）
+[DllImport("gdi32.dll")]
+private static extern int GetGuiResources(IntPtr hProcess, uint uiFlags);
+
+private static int GetGDIHandleCount()
+{
+    return GetGuiResources(Process.GetCurrentProcess().Handle, 0); // GR_GDIOBJECTS = 0
+}
+// ==================== 19. COM组件崩溃 ====================
+private static void TriggerCOMCrash()
+{
+    // 方法1: 调用未注册的COM组件
+    try
+    {
+        // 尝试创建不存在的COM类
+        var type = Type.GetTypeFromCLSID(Guid.Parse("00000000-0000-0000-0000-000000000000"));
+        var instance = Activator.CreateInstance(type); // 会抛出 COMException
+    }
+    catch (COMException)
+    {
+        // 捕获后继续更激进的测试
+    }
+
+    // 方法2: 在COM调用中制造访问冲突
+    COMCrash_AccessViolation();
+    
+    // 方法3: 破坏COM线程模型
+    COMCrash_WrongApartment();
+}
+
+// COM访问冲突 - 通过不安全的COM互操作
+private static unsafe void COMCrash_AccessViolation()
+{
+    // 尝试手动调用COM虚表，传入无效指针
+    // 模拟COM组件内部崩溃
+    
+    // 创建一个临时的COM对象然后破坏它
+    var shell = new Shell32.Shell(); // Windows Shell COM对象
+    var punk = Marshal.GetIUnknownForObject(shell);
+    
+    // 获取虚表指针
+    var vtbl = *(IntPtr**)punk;
+    
+    // 调用虚表中的方法，但传入完全无效的参数
+    // 这会导致COM组件内部访问冲突
+    var releaseDelegate = Marshal.GetDelegateForFunctionPointer<ReleaseDelegate>(vtbl[2]);
+    
+    // 先正常释放一次
+    releaseDelegate(punk);
+    
+    // 再次释放同一个指针（双重释放COM对象）
+    releaseDelegate(punk); // 这里会导致COM对象堆损坏
+    
+    // 或者尝试通过已释放的指针调用方法
+    var queryInterface = Marshal.GetDelegateForFunctionPointer<QueryInterfaceDelegate>(vtbl[0]);
+    Guid iid = Guid.Parse("00000000-0000-0000-C000-000000000046");
+    IntPtr ppv;
+    queryInterface(punk, ref iid, out ppv); // 使用已释放的接口指针
+}
+
+private delegate int QueryInterfaceDelegate(IntPtr punk, ref Guid iid, out IntPtr ppv);
+private delegate int ReleaseDelegate(IntPtr punk);
+
+// COM线程模型错误 - STA/MTA混淆
+private static void COMCrash_WrongApartment()
+{
+    // 在主线程（STA）中创建STA COM对象
+    var ie = new SHDocVw.InternetExplorer(); // STA COM对象
+    
+    // 然后在MTA线程中使用它（违反COM线程规则）
+    var mtaThread = new Thread(() =>
+    {
+        try
+        {
+            // 尝试在MTA线程调用STA对象
+            ie.Visible = true; // 这会触发RPC_E_WRONG_THREAD 或崩溃
+        }
+        catch (InvalidCastException)
+        {
+            // 线程转换失败，尝试更激进的方式
+            COMCrash_Final();
+        }
+    });
+    mtaThread.SetApartmentState(ApartmentState.MTA);
+    mtaThread.Start();
+    mtaThread.Join();
+}
+
+// 最终COM崩溃 - 破坏COM消息循环
+private static void COMCrash_Final()
+{
+    // 创建一个STA线程，但不运行消息循环
+    var staThread = new Thread(() =>
+    {
+        // 创建STA COM对象
+        var shell = new Shell32.Shell();
+        
+        // 但不启动消息泵（Application.Run）
+        // 任何COM调用都会因为没有消息循环而挂起或崩溃
+        
+        // 强制进行COM调用
+        try
+        {
+            shell.NameSpace("C:\\");
+        }
+        catch (COMException ex) when (ex.HResult == -2147417842) // RPC_E_SERVER_UNAVAILABLE
+        {
+            // 预期错误，但继续破坏
+        }
+        
+        // 最激进的方式：直接终止COM服务器进程
+        // 查找COM服务器进程并杀死它
+        var comProcesses = Process.GetProcessesByName("dllhost");
+        foreach (var proc in comProcesses)
+        {
+            try { proc.Kill(); } catch { }
+        }
+        
+        // 然后再次调用COM，此时COM基础结构已损坏
+        shell.NameSpace("C:\\"); // 必定崩溃
+    });
+    staThread.SetApartmentState(ApartmentState.STA);
+    staThread.Start();
+    staThread.Join();
+}
+
+
+}

@@ -1,0 +1,25 @@
+using System;
+using System.Windows.Forms;
+
+namespace CrashTest.Unified
+{
+    static class Program
+    {
+        [STAThread]
+        static void Main(string[] args)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            
+            // 如果带参数启动，直接触发对应崩溃
+            if (args.Length > 0)
+            {
+                CrashTrigger.Execute(args[0]);
+                return;
+            }
+
+            // 否则显示选择界面
+            Application.Run(new CrashSelectorForm());
+        }
+    }
+}

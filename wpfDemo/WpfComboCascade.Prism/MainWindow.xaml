@@ -1,0 +1,96 @@
+﻿<Window x:Class="WpfComboCascade.PrismDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="Prism MVVM 级联 ComboBox"
+        Width="520"
+        Height="420"
+        WindowStartupLocation="CenterScreen">
+    <Border Padding="24" Background="#FFF3F8FF">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0,0,0,20">
+                <TextBlock FontSize="24" FontWeight="SemiBold" Text="Prism MVVM 级联示例" />
+                <TextBlock Margin="0,8,0,0"
+                           Foreground="#FF666666"
+                           Text="第 1 行变更后，由 ViewModel 统一更新第 2 到第 6 行的选中值。" />
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" VerticalAlignment="Center" Text="第 1 行" />
+                <ComboBox Grid.Row="0"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          ItemsSource="{Binding NumberOptions}"
+                          SelectedItem="{Binding FirstSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="第 2 行" />
+                <ComboBox Grid.Row="1"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          IsEnabled="False"
+                          ItemsSource="{Binding NumberOptions}"
+                          SelectedItem="{Binding SecondSelection}" />
+
+                <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="第 3 行" />
+                <ComboBox Grid.Row="2"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          IsEnabled="False"
+                          ItemsSource="{Binding NumberOptions}"
+                          SelectedItem="{Binding ThirdSelection}" />
+
+                <TextBlock Grid.Row="3" VerticalAlignment="Center" Text="第 4 行" />
+                <ComboBox Grid.Row="3"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          IsEnabled="False"
+                          ItemsSource="{Binding NumberOptions}"
+                          SelectedItem="{Binding FourthSelection}" />
+
+                <TextBlock Grid.Row="4" VerticalAlignment="Center" Text="第 5 行" />
+                <ComboBox Grid.Row="4"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          IsEnabled="False"
+                          ItemsSource="{Binding NumberOptions}"
+                          SelectedItem="{Binding FifthSelection}" />
+
+                <TextBlock Grid.Row="5" VerticalAlignment="Center" Text="第 6 行" />
+                <ComboBox Grid.Row="5"
+                          Grid.Column="1"
+                          IsEnabled="False"
+                          ItemsSource="{Binding NumberOptions}"
+                          SelectedItem="{Binding SixthSelection}" />
+            </Grid>
+
+            <TextBlock Grid.Row="2"
+                       Margin="0,20,0,0"
+                       VerticalAlignment="Top"
+                       Foreground="#FF666666"
+                       Text="逻辑规则：后续每一行 = 前一行 + 1，超过 6 就显示为空。" />
+        </Grid>
+    </Border>
+</Window>

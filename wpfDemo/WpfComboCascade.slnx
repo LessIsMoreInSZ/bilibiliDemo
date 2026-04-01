@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="WpfComboCascade.CodeBehind/WpfComboCascade.CodeBehind.csproj" />
+  <Project Path="WpfComboCascade.Prism/WpfComboCascade.Prism.csproj" />
+</Solution>

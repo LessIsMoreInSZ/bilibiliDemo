@@ -20,7 +20,7 @@
                 <TextBlock FontSize="24" FontWeight="SemiBold" Text="WPF Code-Behind 级联示例" />
                 <TextBlock Margin="0,8,0,0"
                            Foreground="#FF666666"
-                           Text="第 1 行选中后，第 2 到第 6 行自动显示后续数字，超出 6 的位置为空。" />
+                           Text="六个下拉框都可选。每次选择后，其它下拉框的候选项会排除已选值。" />
             </StackPanel>
 
             <Grid Grid.Row="1">
@@ -42,48 +42,48 @@
                           Grid.Row="0"
                           Grid.Column="1"
                           Margin="0,0,0,12"
-                          SelectionChanged="ComboBox1_OnSelectionChanged" />
+                          SelectionChanged="ComboBox_OnSelectionChanged" />
 
                 <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="第 2 行" />
                 <ComboBox x:Name="ComboBox2"
                           Grid.Row="1"
                           Grid.Column="1"
                           Margin="0,0,0,12"
-                          IsEnabled="False" />
+                          SelectionChanged="ComboBox_OnSelectionChanged" />
 
                 <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="第 3 行" />
                 <ComboBox x:Name="ComboBox3"
                           Grid.Row="2"
                           Grid.Column="1"
                           Margin="0,0,0,12"
-                          IsEnabled="False" />
+                          SelectionChanged="ComboBox_OnSelectionChanged" />
 
                 <TextBlock Grid.Row="3" VerticalAlignment="Center" Text="第 4 行" />
                 <ComboBox x:Name="ComboBox4"
                           Grid.Row="3"
                           Grid.Column="1"
                           Margin="0,0,0,12"
-                          IsEnabled="False" />
+                          SelectionChanged="ComboBox_OnSelectionChanged" />
 
                 <TextBlock Grid.Row="4" VerticalAlignment="Center" Text="第 5 行" />
                 <ComboBox x:Name="ComboBox5"
                           Grid.Row="4"
                           Grid.Column="1"
                           Margin="0,0,0,12"
-                          IsEnabled="False" />
+                          SelectionChanged="ComboBox_OnSelectionChanged" />
 
                 <TextBlock Grid.Row="5" VerticalAlignment="Center" Text="第 6 行" />
                 <ComboBox x:Name="ComboBox6"
                           Grid.Row="5"
                           Grid.Column="1"
-                          IsEnabled="False" />
+                          SelectionChanged="ComboBox_OnSelectionChanged" />
             </Grid>
 
             <TextBlock Grid.Row="2"
                        Margin="0,20,0,0"
                        VerticalAlignment="Top"
                        Foreground="#FF666666"
-                       Text="示例：第 1 行选 3 时，第 2 到第 6 行会显示 4、5、6、空、空。" />
+                       Text="示例：第 1 行选 1 后，其它下拉框只剩 2 3 4 5 6；第 2 行再选 3，其他框会同步排除 1 和 3。" />
         </Grid>
     </Border>
 </Window>

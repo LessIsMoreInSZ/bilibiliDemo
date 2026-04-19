@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../BindingListThreadPitfallDemo/BindingListThreadPitfallDemo.csproj" />
   <Project Path="CrashTest.Unified.csproj" />
 </Solution>

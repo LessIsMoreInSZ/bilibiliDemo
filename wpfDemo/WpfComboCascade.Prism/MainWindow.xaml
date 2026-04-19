@@ -1,0 +1,91 @@
+﻿<Window x:Class="WpfComboCascade.PrismDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="Prism MVVM 级联 ComboBox"
+        Width="520"
+        Height="420"
+        WindowStartupLocation="CenterScreen">
+    <Border Padding="24" Background="#FFF3F8FF">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0,0,0,20">
+                <TextBlock FontSize="24" FontWeight="SemiBold" Text="Prism MVVM 级联示例" />
+                <TextBlock Margin="0,8,0,0"
+                           Foreground="#FF666666"
+                           Text="六个下拉框都可选。每次选择后，其它下拉框的候选项会排除已选值。" />
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" VerticalAlignment="Center" Text="第 1 行" />
+                <ComboBox Grid.Row="0"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          ItemsSource="{Binding FirstOptions}"
+                          SelectedItem="{Binding FirstSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="第 2 行" />
+                <ComboBox Grid.Row="1"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          ItemsSource="{Binding SecondOptions}"
+                          SelectedItem="{Binding SecondSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="第 3 行" />
+                <ComboBox Grid.Row="2"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          ItemsSource="{Binding ThirdOptions}"
+                          SelectedItem="{Binding ThirdSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="3" VerticalAlignment="Center" Text="第 4 行" />
+                <ComboBox Grid.Row="3"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          ItemsSource="{Binding FourthOptions}"
+                          SelectedItem="{Binding FourthSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="4" VerticalAlignment="Center" Text="第 5 行" />
+                <ComboBox Grid.Row="4"
+                          Grid.Column="1"
+                          Margin="0,0,0,12"
+                          ItemsSource="{Binding FifthOptions}"
+                          SelectedItem="{Binding FifthSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="5" VerticalAlignment="Center" Text="第 6 行" />
+                <ComboBox Grid.Row="5"
+                          Grid.Column="1"
+                          ItemsSource="{Binding SixthOptions}"
+                          SelectedItem="{Binding SixthSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <TextBlock Grid.Row="2"
+                       Margin="0,20,0,0"
+                       VerticalAlignment="Top"
+                       Foreground="#FF666666"
+                       Text="示例：第 1 行选 1 后，其它下拉框只剩 2 3 4 5 6；第 2 行再选 3，其他框会同步排除 1 和 3。" />
+        </Grid>
+    </Border>
+</Window>

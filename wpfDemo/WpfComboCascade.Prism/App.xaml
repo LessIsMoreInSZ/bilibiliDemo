@@ -1,0 +1,6 @@
+﻿<prism:PrismApplication x:Class="WpfComboCascade.PrismDemo.App"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Wpf">
+    <Application.Resources />
+</prism:PrismApplication>

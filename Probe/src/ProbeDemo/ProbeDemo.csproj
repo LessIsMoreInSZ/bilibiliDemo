@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>ProbeDemo</AssemblyName>
+    <RootNamespace>ProbeDemo</RootNamespace>
+  </PropertyGroup>
+
+  <!-- 调试构建定义 PROBE 符号：ConditionalProbe 生效；发布时剥除 -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>$(DefineConstants);PROBE</DefineConstants>
+  </PropertyGroup>
+
+</Project>

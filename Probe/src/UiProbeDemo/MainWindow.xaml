@@ -1,0 +1,58 @@
+<Window x:Class="UiProbeDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="UI 探针演示台 —— 点按钮制造 bug,看探针回放现场" Height="720" Width="1180"
+        WindowStartupLocation="CenterScreen" Background="#1E1E2E">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,7"/>
+            <Setter Property="Margin" Value="0,4,0,0"/>
+            <Setter Property="Background" Value="#2F2F44"/>
+            <Setter Property="Foreground" Value="#EAEAF2"/>
+            <Setter Property="BorderBrush" Value="#4A4A68"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#B8B8C8"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="430"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0" Margin="14,12,6,12">
+            <TextBlock DockPanel.Dock="Top" Text="触发器(这是业务,不是探针)" FontSize="15" FontWeight="Bold" Foreground="#EAEAF2" Margin="0,0,0,6"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Button Content="① 制造 UI 卡顿(UI 线程同步睡 800ms)" Click="Btn1_Click"/>
+                    <Button Content="② 制造绑定错误(绑定到不存在的属性)" Click="Btn2_Click"/>
+                    <Button Content="③ 事件泄漏(奇数轮不退订 / 偶数轮退订)" Click="Btn3_Click"/>
+                    <Button Content="④ 布局抖动(开/停 30ms 抖动发生器)" Click="Btn4_Click"/>
+                    <Button Content="⑤ 派发积压(一次投递 40 个重活)" Click="Btn5_Click"/>
+                    <Button Content="⑥ FPS 面板(采样 10s)" Click="Btn6_Click"/>
+                    <Button Content="⑦ 值流追踪(开/关,然后拖动滑条)" Click="Btn7_Click"/>
+                    <Button Content="⑧ async void 异常(全局异常探针接住)" Click="Btn8_Click"/>
+                    <Button Content="⑨ 可视化树快照(打印整棵树)" Click="Btn9_Click"/>
+                    <Button Content="⑩ 打开后台探针仪表盘(资源/状态机/Modbus)" Click="Btn10_Click" Background="#1F4A3C"/>
+                    <Button Content="■ 停止全部探针" Click="BtnStop_Click" Background="#5A2A2A"/>
+                    <Separator Margin="0,10,0,4" Background="#3A3A50"/>
+                    <TextBlock Text="演示区" FontSize="13" FontWeight="Bold" Margin="0,2"/>
+                    <TextBlock x:Name="TxtLabel" Text="{Binding Label}" FontSize="20" Foreground="#F7C948" Margin="0,4,0,2"/>
+                    <Slider Value="{Binding Value}" IsSnapToTickEnabled="True" TickFrequency="1"/>
+                    <StackPanel x:Name="PanelBroken"/>
+                    <TextBlock Text="↑ ②的错误绑定输出会出现在这里(界面空白但探针有记录)" FontSize="11" Margin="0,4,0,8"/>
+                    <Rectangle x:Name="RectJitter" Fill="#F7B267" Width="60" Height="35" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+        <DockPanel Grid.Column="1" Margin="6,12,14,12">
+            <Border DockPanel.Dock="Top" Background="#2A2A3C" CornerRadius="4" Padding="10,6" Margin="0,0,0,6">
+                <TextBlock Foreground="#F7C948" Text="黄色 [PROBE] 行 = 探针打点(Release 构建里全部消失);其余为业务输出" FontSize="12.5"/>
+            </Border>
+            <TextBox x:Name="LogBox" Background="#12121C" Foreground="#D8D8E0" FontFamily="Consolas" FontSize="12.5"
+                     IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True"/>
+        </DockPanel>
+    </Grid>
+</Window>

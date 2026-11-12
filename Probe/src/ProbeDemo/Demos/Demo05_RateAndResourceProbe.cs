@@ -20,11 +20,11 @@ namespace ProbeDemo.Demos
 
         public static void Run()
         {
-            RateProbe heartBeat = new RateProbe("下位机心跳", windowMs: 1000);
+            RateProbe heartBeat = new RateProbe("下位机心跳", windowMs: 900);
 
             ResourceProbe.Sample("压测前");
 
-            // 模拟：心跳每 100ms 一次（=10 次/秒），连发 1 秒看速率曲线
+            // 模拟：心跳每 100ms 一次（=10 次/秒），略短于窗口的时间段内故意丢一拍
             for (int i = 0; i < 10; i++)
             {
                 if (i != 6) heartBeat.Hit();           // 故意丢一拍，观察计数 9 而不是 10

@@ -90,7 +90,11 @@ namespace UiProbeDemo
         private void Btn7_Click(object sender, RoutedEventArgs e) => UiChangeProbes.ToggleValueTrace(_vm, "滑条");
 
         private void Btn8_Click(object sender, RoutedEventArgs e) =>
-            UiDiagnosticsProbes.SafeAsync(() => BusinessRisky(), "订单同步");
+            UiDiagnosticsProbes.SafeAsync(async () =>
+            {
+                await Task.Yield();
+                BusinessRisky();
+            }, "订单同步");
 
         private void BusinessRisky() => throw new InvalidOperationException("模拟:上游返回 null 引发的空引用");
 
@@ -107,6 +111,7 @@ namespace UiProbeDemo
             UiChangeProbes.UnwatchLayout();
             UiChangeProbes.SignalSource.Reset();
             UiDiagnosticsProbes.StopBindingProbe();
+            UiDiagnosticsProbes.StopExceptionProbes();
             ProbeLog.Write("全部探针已停止;业务照常运行", false);
         }
     }

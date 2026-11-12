@@ -49,7 +49,9 @@ namespace ProbeDemo.Demos
             probe.OnEnter(DeviceState.Idle);
 
             // 事后导出完整状态流（实际项目里一般 Dump 进日志文件）
+#if PROBE
             Console.WriteLine(probe.DumpHistory());
+#endif
         }
     }
 }

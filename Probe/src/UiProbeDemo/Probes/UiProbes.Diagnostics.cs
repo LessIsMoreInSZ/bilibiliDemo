@@ -3,6 +3,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace UiProbeDemo.Probes
 {
@@ -13,6 +14,11 @@ namespace UiProbeDemo.Probes
     /// </summary>
     public static class UiDiagnosticsProbes
     {
+        private static Application _exceptionProbeApp;
+        private static DispatcherUnhandledExceptionEventHandler _dispatcherExceptionHandler;
+        private static EventHandler<UnobservedTaskExceptionEventArgs> _taskExceptionHandler;
+        private static UnhandledExceptionEventHandler _appDomainExceptionHandler;
+
         // ==================== §2 绑定错误 ====================
 
         private sealed class BindingTraceListener : TraceListener
@@ -51,22 +57,43 @@ namespace UiProbeDemo.Probes
 
         // ==================== §8 全局异常四路 ====================
 
+        [Conditional("PROBE")]
         public static void InstallExceptionProbes(Application app)
         {
-            app.DispatcherUnhandledException += (s, e) =>
+            if (app == null) throw new ArgumentNullException(nameof(app));
+            if (_exceptionProbeApp != null) return;
+
+            _exceptionProbeApp = app;
+            _dispatcherExceptionHandler = (s, e) =>
             {
                 ReportUnhandled("UI 线程未处理异常", e.Exception);
-                e.Handled = true;    // 采证期:先吞掉保活窗口再逐帧复现
             };
-            TaskScheduler.UnobservedTaskException += (s, e) =>
+            _taskExceptionHandler = (s, e) =>
             {
                 ReportUnhandled("Task 未观察异常", e.Exception);
-                e.SetObserved();
             };
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            _appDomainExceptionHandler = (s, e) =>
                 ReportUnhandled("AppDomain 终结异常", e.ExceptionObject as Exception);
 
-            ProbeLog.Announce("全局异常探针:已安装三路(第四路见 SafeAsync 包装器)");
+            app.DispatcherUnhandledException += _dispatcherExceptionHandler;
+            TaskScheduler.UnobservedTaskException += _taskExceptionHandler;
+            AppDomain.CurrentDomain.UnhandledException += _appDomainExceptionHandler;
+            ProbeLog.Announce("全局异常探针:已安装三路(只记录,不吞异常或改变默认处理)");
+        }
+
+        [Conditional("PROBE")]
+        public static void StopExceptionProbes()
+        {
+            if (_exceptionProbeApp == null) return;
+
+            _exceptionProbeApp.DispatcherUnhandledException -= _dispatcherExceptionHandler;
+            TaskScheduler.UnobservedTaskException -= _taskExceptionHandler;
+            AppDomain.CurrentDomain.UnhandledException -= _appDomainExceptionHandler;
+            _exceptionProbeApp = null;
+            _dispatcherExceptionHandler = null;
+            _taskExceptionHandler = null;
+            _appDomainExceptionHandler = null;
+            ProbeLog.Announce("全局异常探针:已摘除");
         }
 
         [Conditional("PROBE")]
@@ -78,11 +105,19 @@ namespace UiProbeDemo.Probes
             if (first != null) ProbeLog.Write($"  首帧: {first.Trim()}", true);
         }
 
-        /// <summary>第四路:async void 包装器——async void 事件处理器必须经它下坠。</summary>
-        public static async void SafeAsync(Action action, string tag = "业务")
+        /// <summary>第四路:async void 包装器——记录后重新抛出,由 UI 默认异常处理继续处理。</summary>
+        public static async void SafeAsync(Func<Task> action, string tag = "业务")
         {
-            try { action(); }
-            catch (Exception ex) { ReportSafeFailure(tag, ex); }
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            try
+            {
+                await action();
+            }
+            catch (Exception ex)
+            {
+                ReportSafeFailure(tag, ex);
+                throw;
+            }
         }
 
         [Conditional("PROBE")]

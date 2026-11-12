@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ProbeDemo
 {
@@ -26,14 +27,13 @@ namespace ProbeDemo
     public static class ExceptionProbe
     {
         private static readonly ConcurrentDictionary<string, long> Counts = new ConcurrentDictionary<string, long>();
-        private static bool _installed;
+        private static int _installed;
 
         /// <summary>挂上异常照妖镜（幂等）。Release 未定义 PROBE 时不会挂载，零影响。</summary>
         [Conditional("PROBE")]
         public static void Install()
         {
-            if (_installed) return;
-            _installed = true;
+            if (Interlocked.Exchange(ref _installed, 1) != 0) return;
             AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
             {
                 string key = e.Exception.GetType().Name;

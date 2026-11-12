@@ -33,7 +33,7 @@
                     <Button Content="⑤ 派发积压(一次投递 40 个重活)" Click="Btn5_Click"/>
                     <Button Content="⑥ FPS 面板(采样 10s)" Click="Btn6_Click"/>
                     <Button Content="⑦ 值流追踪(开/关,然后拖动滑条)" Click="Btn7_Click"/>
-                    <Button Content="⑧ async void 异常(全局异常探针接住)" Click="Btn8_Click"/>
+                    <Button Content="⑧ async void 异常(探针记录后仍按默认路径处理)" Click="Btn8_Click"/>
                     <Button Content="⑨ 可视化树快照(打印整棵树)" Click="Btn9_Click"/>
                     <Button Content="⑩ 打开后台探针仪表盘(资源/状态机/Modbus)" Click="Btn10_Click" Background="#1F4A3C"/>
                     <Button Content="■ 停止全部探针" Click="BtnStop_Click" Background="#5A2A2A"/>

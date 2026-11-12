@@ -74,7 +74,7 @@ namespace ProbeDemo
         /// <summary>目录变更哨兵：返回 FileSystemWatcher（需调用方保活）。事件全部经 Write 收口。</summary>
         public static FileSystemWatcher Watch(string tag, string dir)
         {
-            var fsw = new FileSystemWatcher(dir) { EnableRaisingEvents = true, IncludeSubdirectories = true };
+            var fsw = new FileSystemWatcher(dir) { IncludeSubdirectories = true };
             FileSystemEventHandler onAny = (s, e) =>
                 Write($"{Now} [FILE:{tag}] {e.ChangeType}: {e.Name}");
             RenamedEventHandler onRename = (s, e) =>
@@ -83,6 +83,7 @@ namespace ProbeDemo
             fsw.Changed += onAny;
             fsw.Deleted += onAny;
             fsw.Renamed += onRename;
+            fsw.EnableRaisingEvents = true;
             Write($"{Now} [FILE:{tag}] 开始盯守目录 {dir}");
             return fsw;
         }

@@ -6,11 +6,11 @@
 // 想单独运行某个 Demo，在下面的清单里注释掉其余条目即可。
 //
 // Demo 01~06 基础类：条件/作用域/回环帧/状态机/频次资源/快照对比
-// Demo 07~12 细分领域（讲解见《04-细分领域探针.md》）
+// Demo 07~12 细分领域（用法与注意事项见《01-探针技术详解.md》§5.7~5.10）
 //   07 线程锁  08 网络  09 文件IO  10 GC  11 异常流  12 派发延迟
 //
 // 运行：dotnet run --project src/ProbeDemo
-// 发布：dotnet publish -c Release  观察输出里 [PROBE] 全部消失
+// 发布：dotnet publish -c Release  验证 Conditional 探针调用已剥除
 //----------------------------------------------------------------*/
 using System;
 using ProbeDemo.Demos;

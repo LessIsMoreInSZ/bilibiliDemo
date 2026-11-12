@@ -9,7 +9,6 @@
 //----------------------------------------------------------------*/
 using System;
 using System.Diagnostics;
-using System.Threading;
 
 namespace ProbeDemo
 {
@@ -18,31 +17,44 @@ namespace ProbeDemo
     {
         private readonly string _name;
         private readonly int _windowMs;
-
+        private readonly object _gate = new object();
         private long _count;
-        private long _windowStartTicks = Stopwatch.GetTimestamp();
+        private long _windowStart;
 
         public RateProbe(string name, int windowMs = 5000)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("探针名称不能为空。", nameof(name));
+            if (windowMs <= 0)
+                throw new ArgumentOutOfRangeException(nameof(windowMs), "统计窗口必须大于 0。");
+
             _name = name;
             _windowMs = windowMs;
+            _windowStart = Stopwatch.GetTimestamp();
         }
 
         /// <summary>事件发生时调用一次。Release（未定义 PROBE）下整个方法被剥除。</summary>
         [Conditional("PROBE")]
         public void Hit()
         {
-            Interlocked.Increment(ref _count);
-            double elapsedMs = (Stopwatch.GetTimestamp() - _windowStartTicks) * 1000.0 / Stopwatch.Frequency;
-            if (elapsedMs >= _windowMs)
+            long count;
+            double elapsedMs;
+            lock (_gate)
             {
-                Trace.WriteLine($"[PROBE {DateTime.Now:HH:mm:ss.fff}] [RATE:{_name}] " +
-                                $"近 {_windowMs / 1000.0:F1}s 共 {Interlocked.Read(ref _count)} 次 " +
-                                $"（{Interlocked.Read(ref _count) / (_windowMs / 1000.0):F1} 次/秒）");
-                // 窗口翻转：从下一次 Hit 起重新计窗（速率以调用间隔为粒度）
-                Interlocked.Exchange(ref _windowStartTicks, Stopwatch.GetTimestamp());
-                Interlocked.Exchange(ref _count, 0);
+                _count++;
+                long now = Stopwatch.GetTimestamp();
+                elapsedMs = (now - _windowStart) * 1000.0 / Stopwatch.Frequency;
+                if (elapsedMs < _windowMs)
+                    return;
+
+                count = _count;
+                _count = 0;
+                _windowStart = now;
             }
+
+            double rate = count / (elapsedMs / 1000.0);
+            Trace.WriteLine($"[PROBE {DateTime.Now:HH:mm:ss.fff}] [RATE:{_name}] " +
+                            $"近 {elapsedMs / 1000.0:F1}s 共 {count} 次（{rate:F1} 次/秒）");
         }
     }
 }

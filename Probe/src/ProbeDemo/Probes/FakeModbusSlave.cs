@@ -41,7 +41,14 @@ namespace ProbeDemo
                 {
                     // ---- 探针核心：完整读下一个 PDU 并原样打印 ----
                     if (!await ReadExactAsync(stream, header, 7)) break;
-                    int pduLen = ((header[4] << 8) | header[5]) - 1;  // 长度字段-1=纯PDU长度（先并位再减，注意优先级）
+                    int mbapLength = (header[4] << 8) | header[5];
+                    if (mbapLength < 2 || mbapLength > 254)
+                    {
+                        Console.WriteLine($"[SLAVE] !! MBAP 长度无效: {mbapLength}（合法范围 2..254）");
+                        break;
+                    }
+
+                    int pduLen = mbapLength - 1;  // 长度字段包含单元标识，减 1 得到 PDU 长度
                     var pdu = new byte[pduLen];
                     if (!await ReadExactAsync(stream, pdu, pduLen)) break;
 
@@ -50,18 +57,32 @@ namespace ProbeDemo
                     byte   unit       = header[6];
 
                     Console.WriteLine("[SLAVE] RX 完整帧: " + Hex(header) + Hex(pdu));
-                    Console.WriteLine($"[SLAVE] 解析: 事务号={transaction} 协议号={protocol}(应=0) " +
-                                      $"长度={pduLen + 1} 单元={unit} 功能码=0x{pdu[0]:X2}");
                     if (protocol != 0)
+                    {
                         Console.WriteLine("[SLAVE] !! 协议号非 0 —— 主站组帧错位");
+                        continue;
+                    }
+
+                    Console.WriteLine($"[SLAVE] 解析: 事务号={transaction} 协议号={protocol}(应=0) " +
+                                      $"长度={mbapLength} 单元={unit} 功能码=0x{pdu[0]:X2}");
 
                     // ---- 对 0x03 回一个合法应答（读 2 个寄存器）----
                     if (pdu[0] == 0x03)
                     {
+                        if (pduLen != 5)
+                        {
+                            Console.WriteLine($"[SLAVE] !! 0x03 请求 PDU 长度应为 5，实际为 {pduLen}");
+                            continue;
+                        }
+
                         var resp = new byte[] { header[0], header[1], 0x00, 0x00, 0x00, 0x07, unit,
                                                 0x03, 0x04, 0x12, 0x34, 0x56, 0x78 };
                         await stream.WriteAsync(resp, 0, resp.Length);
                         Console.WriteLine("[SLAVE] TX 应答: " + Hex(resp));
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[SLAVE] !! 暂不支持功能码 0x{pdu[0]:X2}");
                     }
                 }
             }

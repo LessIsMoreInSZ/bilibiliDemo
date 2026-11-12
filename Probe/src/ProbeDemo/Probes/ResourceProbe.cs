@@ -20,17 +20,19 @@ namespace ProbeDemo
         [Conditional("PROBE")]
         public static void Sample(string name)
         {
-            var p = Process.GetCurrentProcess();
-            p.Refresh();   // 让句柄/线程计数取到当前值
+            using (var p = Process.GetCurrentProcess())
+            {
+                p.Refresh();   // 让句柄/线程计数取到当前值
 
-            Trace.WriteLine(
-                $"[PROBE {DateTime.Now:HH:mm:ss.fff}] [RES:{name}] " +
-                $"内存={p.WorkingSet64 / 1024 / 1024}MB " +
-                $"私有提交={p.PrivateMemorySize64 / 1024 / 1024}MB " +
-                $"句柄={p.HandleCount} " +
-                $"线程={p.Threads.Count} " +
-                $"GC(Gen0/1/2)={GC.CollectionCount(0)}/{GC.CollectionCount(1)}/{GC.CollectionCount(2)} " +
-                $"托管堆≈{GC.GetTotalMemory(false) / 1024}KB");
+                Trace.WriteLine(
+                    $"[PROBE {DateTime.Now:HH:mm:ss.fff}] [RES:{name}] " +
+                    $"内存={p.WorkingSet64 / 1024 / 1024}MB " +
+                    $"私有提交={p.PrivateMemorySize64 / 1024 / 1024}MB " +
+                    $"句柄={p.HandleCount} " +
+                    $"线程={p.Threads.Count} " +
+                    $"GC(Gen0/1/2)={GC.CollectionCount(0)}/{GC.CollectionCount(1)}/{GC.CollectionCount(2)} " +
+                    $"托管堆≈{GC.GetTotalMemory(false) / 1024}KB");
+            }
         }
     }
 }

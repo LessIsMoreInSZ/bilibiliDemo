@@ -34,13 +34,22 @@ namespace ProbeDemo
             Trace.WriteLine($"[PROBE {Direction(direction)} {data.Length}B] {ToHex(data)}");
         }
 
-        private static string Direction(string d) => d == "TX" ? "发 >>>" : "收 <<<";
+        private static string Direction(string direction)
+        {
+            if (string.Equals(direction, "TX", StringComparison.OrdinalIgnoreCase)) return "发 >>>";
+            if (string.Equals(direction, "RX", StringComparison.OrdinalIgnoreCase)) return "收 <<<";
+            return direction ?? "未知方向";
+        }
 
         private static string ToHex(byte[] data)
         {
+            if (data == null) return "(null)";
             var sb = new System.Text.StringBuilder(data.Length * 3);
-            foreach (byte b in data)
-                sb.Append(b.ToString("X2")).Append(' ');
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (i > 0) sb.Append(' ');
+                sb.Append(data[i].ToString("X2"));
+            }
             return sb.ToString();
         }
     }

@@ -28,7 +28,15 @@ namespace ProbeDemo
             foreach (var prop in PublicProps(obj.GetType()))
             {
                 object v;
-                try { v = prop.GetValue(obj); } catch { v = "(取值失败)"; }
+                try
+                {
+                    v = prop.GetValue(obj);
+                }
+                catch (TargetInvocationException ex) when (ex.InnerException != null)
+                {
+                    Exception cause = ex.InnerException;
+                    v = $"<读取失败: {cause.GetType().Name}: {cause.Message}>";
+                }
                 sb.Append(prop.Name).Append('=').Append(v).AppendLine();
             }
             return sb.ToString();
